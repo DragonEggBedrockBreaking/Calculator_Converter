@@ -83,3 +83,7 @@ compile_commands.json
 # Build dirs
 build/
 dist/
+.cache/
+
+# Imgui
+imgui.ini

@@ -11,6 +11,9 @@ project('converter',
 executable(
   'converter',
   sources: [
+    'lib/imgui_impl_glfw.cpp',
+    'lib/imgui_impl_opengl3.cpp',
+    'lib/imgui_stdlib.cpp',
     'main.cpp'
   ],
   dependencies: [
