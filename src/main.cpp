@@ -8,10 +8,10 @@
 
 int main()
 {
+    // ImGui stuff
     if (!glfwInit()) {
         return 1;
     }
-
 
     // GLFW window
     GLFWwindow *window = glfwCreateWindow(1280, 720, "Dear ImGui", NULL, NULL);
@@ -36,7 +36,6 @@ int main()
     const char *glsl_version = "#version 150";
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // Base stuff
     IMGUI_CHECKVERSION();
@@ -45,7 +44,7 @@ int main()
     ImGui_ImplOpenGL3_Init(glsl_version);
     ImGui::StyleColorsDark();
 
-    bool should_stay_open = true;
+    // bool should_stay_open = true;
 
     // Main Loop
     while (!glfwWindowShouldClose(window)) {
@@ -59,7 +58,7 @@ int main()
         ImGui::NewFrame();
 
         // Render gui
-        if (should_stay_open) {
+        /*if (should_stay_open) {
             ImGui::Begin("Demo window");
 
             if (ImGui::Button("Hello!")) {
@@ -70,22 +69,12 @@ int main()
             ImGui::Text("string = %d", i);
             std::string s {""};
             ImGui::InputText("Text", &s);
-
-            if (s != "") {
-                std::clog << s << "\n";
-            }
-
             static float f = 0.0f;
             ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-
-            if (f != 0.0f) {
-                std::clog << f << "\n";
-            }
-
             ImGui::Checkbox("Window Open", &should_stay_open);
 
             ImGui::End();
-        }
+        }*/
 
         // Render imgui into screen
         ImGui::Render();
