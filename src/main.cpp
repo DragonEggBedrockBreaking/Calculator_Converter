@@ -5,9 +5,39 @@
 #include "lib/imgui_impl_glfw.h"
 #include "lib/imgui_impl_opengl3.h"
 #include "lib/imgui_stdlib.h"
+#include "maths_functions.h"
 
+void test()
+{
+    double l1 = linear(1, 2, 2, -1);
+    std::cout << l1 << std::endl;
+    std::cout << 3 << std::endl << std::endl;
+
+    auto [l21, l22] = linear(1.0, 1.0, 0.0, -2.0, 0.0, 13.0, 1.0, -1.0, -4.0, -4.0, 1.0, 3.0);
+    std::cout << l21 << ", " << l22 << std::endl;
+    std::cout << "3.0, 4.0" << std::endl << std::endl;
+
+    auto [l31, l32, l33] = linear(1.0, 2.0, -1.0, 0.0, 0.0, 0.0, 0.0, 2.0, 2.0, 2.0, 2.0, 0.0, 0.0, 0.0, 0.0, 12.0, 1.0, -1.0, 2.0, 0.0, 0.0, 0.0, 0.0, 5.0);
+    std::cout << l31 << ", " << l32 << ", " << l33 << std::endl;
+    std::cout << "1.0, 2.0, 3.0" << std::endl << std::endl;
+
+    auto [l41, l42, l43, l44] = linear(1.0, 2.0, 1.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 5.0, 1.5, 1.0, 2.0, 2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 8.0, 4.0, 4.0, 3.0, 4.0, 0.0, 0.0, 0.0, 0.0, 0.0, 22.0, 0.4, 0.0, 0.2, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 3.0);
+    std::cout << l41 << ", " << l42 << ", " << l43 << ", " << l44 << std::endl;
+    std::cout << "16.0, -6.0, -2.0, -3.0" << std::endl << std::endl;
+
+    auto [q1, q2] = quad(1.0, 0.0, -9.0, 0.0, 0.0, 0.0);
+    std::cout << q1 << ", " << q2 << std::endl;
+    std::cout << "3.0, -3.0" << std::endl << std::endl;
+
+    auto [tp1, tp2] = quad_tp(1.0, 0.0, -9.0, 0.0, 0.0, 0.0);
+    std::cout << tp1 << ", " << tp2 << std::endl;
+    std::cout << "0.0, -9.0" << std::endl << std::endl;
+}
 int main()
 {
+    test();
+    return 0;
+
     // ImGui stuff
     if (!glfwInit()) {
         return 1;

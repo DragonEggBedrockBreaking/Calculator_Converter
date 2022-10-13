@@ -14,11 +14,13 @@ executable(
     'lib/imgui_impl_glfw.cpp',
     'lib/imgui_impl_opengl3.cpp',
     'lib/imgui_stdlib.cpp',
-    'main.cpp'
+    'main.cpp',
+    'maths_functions.cpp'
   ],
   dependencies: [
     dependency('imgui'),
     dependency('glfw3'),
-    dependency('glew')
+    dependency('glew'),
+    dependency('boost')
   ]
 )
