@@ -240,6 +240,21 @@ quartic(const double& error, const double& x4coef1, const double& x3coef1, const
     return std::tuple {g, ans2, ans3, ans4};
 }
 
+const double
+pythag(const double& oppo, const double& adja, const double& hypo, const unknown_side& type)
+{
+    switch (type) {
+    case opp:
+        return std::sqrt(hypo * hypo - adja * adja);
+
+    case adj:
+        return std::sqrt(hypo * hypo - oppo * oppo);
+
+    case hyp:
+        return std::sqrt(adja * adja + oppo * oppo);
+    }
+}
+
 const std::string
 diff(const std::string& equ)
 {

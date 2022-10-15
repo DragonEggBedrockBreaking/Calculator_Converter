@@ -7,66 +7,8 @@
 #include "lib/imgui_stdlib.h"
 #include "maths_functions.h"
 
-void test()
-{
-    double l1 = linear(1, 2, 2, -1);
-    std::cout << l1 << std::endl;
-    std::cout << 3 << std::endl << std::endl;
-
-    auto [l21, l22] = linear(1.0, 1.0, 0.0, -2.0, 0.0, 13.0, 1.0, -1.0, -4.0, -4.0, 1.0, 3.0);
-    std::cout << l21 << ", " << l22 << std::endl;
-    std::cout << "3.0, 4.0" << std::endl << std::endl;
-
-    auto [l31, l32, l33] = linear(1.0, 2.0, -1.0, 0.0, 0.0, 0.0, 0.0, 2.0, 2.0, 2.0, 2.0, 0.0, 0.0, 0.0, 0.0, 12.0, 1.0, -1.0, 2.0, 0.0, 0.0, 0.0, 0.0, 5.0);
-    std::cout << l31 << ", " << l32 << ", " << l33 << std::endl;
-    std::cout << "1.0, 2.0, 3.0" << std::endl << std::endl;
-
-    auto [l41, l42, l43, l44] = linear(1.0, 2.0, 1.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 5.0, 1.5, 1.0, 2.0, 2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 8.0, 4.0, 4.0, 3.0, 4.0, 0.0, 0.0, 0.0, 0.0, 0.0, 22.0, 0.4, 0.0, 0.2, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 3.0);
-    std::cout << l41 << ", " << l42 << ", " << l43 << ", " << l44 << std::endl;
-    std::cout << "16.0, -6.0, -2.0, -3.0" << std::endl << std::endl;
-
-    auto [q1, q2] = quad(1.0, 0.0, -9.0, 0.0, 0.0, 0.0);
-    std::cout << q1 << ", " << q2 << std::endl;
-    std::cout << "3.0, -3.0" << std::endl << std::endl;
-
-    auto [tp1, tp2] = quad_tp(1.0, 0.0, -9.0, 0.0, 0.0, 0.0);
-    std::cout << tp1 << ", " << tp2 << std::endl;
-    std::cout << "0.0, -9.0" << std::endl << std::endl;
-
-    auto [cu1, cu2, cu3] = cubic(0.00001, 1, -4, -6, 0, 0, 0, 0, -5);
-    std::cout << cu1 << ", " << cu2 << ", " << cu3 << std::endl;
-    std::cout << "5, 0.6180339887, -1.618033989" << std::endl << std::endl;
-
-    auto [qu1, qu2, qu3, qu4] = quartic(0.00001, 1, 2, -41, -42, 0, 0, 0, 0, 0, -360);
-    std::cout << qu1 << ", " << qu2 << ", " << qu3 << ", " << qu4 << std::endl;
-    std::cout << "5, 3, -4, -6" << std::endl << std::endl;
-
-    std::string diffed = diff("5x^7 + 8x^6 + 0.5x^3 + 14.8x + 4");
-    std::cout << diffed << std::endl;
-    std::cout << "35x^6 + 48x^5 + 1.5x^2 + 14.8" << std::endl << std::endl;
-
-    std::string integrated = integr("5x^7 + 4x + 9x^-5 + 3");
-    std::cout << integrated << std::endl;
-    std::cout << "0.625x^8 + 2x^2 + -2.25x^-4 + 3x + c" << std::endl << std::endl;
-
-    double n_p_r = npr(20, 5);
-    std::cout << n_p_r << std::endl;
-    std::cout << 1860480 << std::endl << std::endl;
-
-    double n_c_r = ncr(20, 5);
-    std::cout << n_c_r << std::endl;
-    std::cout << 15504 << std::endl << std::endl;
-
-    double binomial = bin_dist(0, 4, 1.0 / 6.0);
-    std::cout << binomial << std::endl;
-    std::cout << 0.4823 << std::endl << std::endl;
-}
-
 int main()
 {
-    test();
-    return 0;
-
     // ImGui stuff
     if (!glfwInit()) {
         return 1;

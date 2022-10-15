@@ -49,13 +49,10 @@ quartic(const double& error, const double& x4coef1, const double& x3coef1, const
         const double& xcoef2, const double& num2);
 
 
-enum unknown_trig { opp, adj, hypo, angle };
+enum unknown_side { opp, adj, hyp };
 
 [[nodiscard]] const double
-trig_ra(const double& opp, const double& adj, const double& hypo, const double& angle, const unknown_trig& type);
-
-[[nodiscard]] const double
-pythag(const double& opp, const double& adj, const double& hypo, const unknown_trig& type);
+pythag(const double& oppo, const double& adja, const double& hypo, const unknown_side& type);
 
 [[nodiscard]] const std::string
 diff(const std::string& equ);
