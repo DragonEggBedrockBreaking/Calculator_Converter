@@ -137,11 +137,11 @@ const std::tuple<double, double> quad_tp(const double& x2coef1, const double& xc
     return std::tuple {x_val, y_val};
 }
 
-const double deg3(const double& a, const double& b, const double& c, const double& d, const double& g)
+const double fx3(const double& a, const double& b, const double& c, const double& d, const double& g)
 {
     return a * g * g * g + b * g * g + c * g + d;
 }
-const double new3(const double& a, const double& b, const double& c, const double& g)
+const double dydx3(const double& a, const double& b, const double& c, const double& g)
 {
     return 3 * a * g * g + 2 * b * g + c;
 }
@@ -156,14 +156,14 @@ const std::tuple<double, double, double> cubic(const double& error, const double
     double c = xcoef1 - xcoef2;
     double d = num1 - num2;
 
-    while (std::abs(deg3(a, b, c, d, g)) > error && count <= 100) {
+    while (std::abs(fx3(a, b, c, d, g)) > error && count <= 100) {
         count ++;
 
-        if (new3(a, b, c, g) == 0) {
+        if (dydx3(a, b, c, g) == 0) {
             g += 0.001;
         }
 
-        g -= deg3(a, b, c, d, g) / new3(a, b, c, g);
+        g -= fx3(a, b, c, d, g) / dydx3(a, b, c, g);
     }
 
     if (a != 1) {
