@@ -57,7 +57,7 @@ void test()
     std::cout << n_c_r << std::endl;
     std::cout << 15504 << std::endl << std::endl;
 
-    double binomial = bin_dist(0, 4, 1 / 6);
+    double binomial = bin_dist(0, 4, 1.0 / 6.0);
     std::cout << binomial << std::endl;
     std::cout << 0.4823 << std::endl << std::endl;
 }

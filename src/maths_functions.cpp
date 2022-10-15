@@ -245,13 +245,13 @@ diff(const std::string& equ)
 {
     const std::string equ_f = std::regex_replace(equ, std::regex(" "), "");
     std::string final;
-    const std::vector<std::string> parts;
+    std::vector<std::string> parts;
     split(parts, equ_f, boost::is_any_of("+"));
 
     for (std::string part : parts) {
         if (part.find("x^") != std::string::npos) {
             part = std::regex_replace(part, std::regex("\\^"), "");
-            const std::vector<std::string> numbers;
+            std::vector<std::string> numbers;
             split(numbers, part, boost::is_any_of("x"));
 
             double first = std::stod(numbers.at(0));
@@ -268,7 +268,7 @@ diff(const std::string& equ)
             }
         }
         else if (part.find("x") != std::string::npos) {
-            const std::vector<std::string> numbers;
+            std::vector<std::string> numbers;
             split(numbers, part, boost::is_any_of("x"));
 
             final = final + numbers.at(0);
@@ -293,13 +293,13 @@ integr(const std::string& equ)
     }
 
     std::string final;
-    const std::vector<std::string> parts;
+    std::vector<std::string> parts;
     split(parts, equ_f, boost::is_any_of("+"));
 
     for (std::string part : parts) {
         if (part.find("x^") != std::string::npos) {
             part = std::regex_replace(part, std::regex("\\^"), "");
-            const std::vector<std::string> numbers;
+            std::vector<std::string> numbers;
             split(numbers, part, boost::is_any_of("x"));
 
             double first = std::stod(numbers.at(0));
@@ -314,7 +314,7 @@ integr(const std::string& equ)
             std::vector<std::string> numbers;
             split(numbers, part, boost::is_any_of("x"));
 
-            const double first = std::stod(numbers.at(0)) / 2;
+            double first = std::stod(numbers.at(0)) / 2;
 
             final += std::to_string(first) + "x^2 + ";
         }

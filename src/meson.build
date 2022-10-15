@@ -22,5 +22,8 @@ executable(
     dependency('glfw3'),
     dependency('glew'),
     dependency('boost')
+  ],
+  cpp_args: [
+    '-Wno-deprecated-declarations'
   ]
 )
