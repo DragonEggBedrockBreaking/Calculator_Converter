@@ -336,3 +336,31 @@ integr(const std::string& equ)
 
     return final;
 }
+
+const double
+factorial(const double& n)
+{
+    if (n <= 1) {
+        return 1;
+    }
+
+    return n * factorial(n - 1);
+}
+
+const double
+npr(const double& n, const double& r)
+{
+    return factorial(n) / factorial(n - r);
+}
+
+const double
+ncr(const double& n, const double& r)
+{
+    return factorial(n) / (factorial(n - r) * factorial(r));
+}
+
+const double
+bin_dist(const double& X, const double& n, const double& p)
+{
+    return std::pow(p, X) * std::pow(1 - p, n - X) * ncr(n, X);
+}

@@ -48,7 +48,20 @@ void test()
     std::string integrated = integr("5x^7 + 4x + 9x^-5 + 3");
     std::cout << integrated << std::endl;
     std::cout << "0.625x^8 + 2x^2 + -2.25x^-4 + 3x + c" << std::endl << std::endl;
+
+    double n_p_r = npr(20, 5);
+    std::cout << n_p_r << std::endl;
+    std::cout << 1860480 << std::endl << std::endl;
+
+    double n_c_r = ncr(20, 5);
+    std::cout << n_c_r << std::endl;
+    std::cout << 15504 << std::endl << std::endl;
+
+    double binomial = bin_dist(0, 4, 1 / 6);
+    std::cout << binomial << std::endl;
+    std::cout << 0.4823 << std::endl << std::endl;
 }
+
 int main()
 {
     test();

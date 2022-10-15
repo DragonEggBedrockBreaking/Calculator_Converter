@@ -64,4 +64,10 @@ diff(const std::string& equ);
 integr(const std::string& equ);
 
 [[nodiscard]] const double
+npr(const double& n, const double& r);
+
+[[nodiscard]] const double
+ncr(const double& n, const double& r);
+
+[[nodiscard]] const double
 bin_dist(const double& X, const double& n, const double& p);
