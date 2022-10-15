@@ -1,6 +1,5 @@
 #include "maths_functions.h"
 #include <boost/algorithm/string.hpp>
-#include <boost/lexical_cast.hpp>
 #include <cmath>
 #include <regex>
 
@@ -254,18 +253,31 @@ diff(const std::string& equ)
     std::vector<std::string> parts;
     split(parts, equ_f, boost::is_any_of("+"));
 
-    for (std::string& part : parts) {
-        try {
-            boost::lexical_cast<int>(part);
-        }
-        catch(boost::bad_lexical_cast) {
+    for (std::string part : parts) {
+        if (part.find("x^") != std::string::npos) {
+            part = std::regex_replace(part, std::regex("\\^"), "");
             std::vector<std::string> numbers;
-            split(numbers, part, boost::is_any_of("x^"));
-            int first = std::stoi(numbers.at(0));
-            int second = std::stoi(numbers.at(1));
-            first = first * second;
+            split(numbers, part, boost::is_any_of("x"));
+
+            double first = std::stod(numbers.at(0));
+            double second = std::stod(numbers.at(1));
+
+            first *= second;
             second--;
-            final = final +  std::to_string(first) + "x^" + std::to_string(second) + " + ";
+
+            if (second != 1) {
+                final += std::to_string(first) + "x^" + std::to_string(second) + " + ";
+            }
+            else {
+                final += std::to_string(first) + "x + ";
+            }
+        }
+        else if (part.find("x") != std::string::npos) {
+            std::vector<std::string> numbers;
+            split(numbers, part, boost::is_any_of("x"));
+
+            final = final + numbers.at(0);
+
         }
     }
 

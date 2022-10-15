@@ -40,6 +40,10 @@ void test()
     auto [qu1, qu2, qu3, qu4] = quartic(0.00001, 1, 2, -41, -42, 0, 0, 0, 0, 0, -360);
     std::cout << qu1 << ", " << qu2 << ", " << qu3 << ", " << qu4 << std::endl;
     std::cout << "5, 3, -4, -6" << std::endl << std::endl;
+
+    std::string diffed = diff("5x^7 + 8x^6 + 0.5x^3 + 14.8x + 4");
+    std::cout << diffed << std::endl;
+    std::cout << "35x^6 + 48x^5 + 1.5x^2 + 14.8" << std::endl << std::endl;
 }
 int main()
 {
