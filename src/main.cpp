@@ -32,6 +32,10 @@ void test()
     auto [tp1, tp2] = quad_tp(1.0, 0.0, -9.0, 0.0, 0.0, 0.0);
     std::cout << tp1 << ", " << tp2 << std::endl;
     std::cout << "0.0, -9.0" << std::endl << std::endl;
+
+    auto [cu1, cu2, cu3] = cubic(0.00001, 1, -4, -6, 0, 0, 0, 0, -5);
+    std::cout << cu1 << ", " << cu2 << ", " << cu3 << std::endl;
+    std::cout << "5, 0.6180339887, -1.618033989" << std::endl << std::endl;
 }
 int main()
 {

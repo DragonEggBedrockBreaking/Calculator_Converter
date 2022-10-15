@@ -27,7 +27,7 @@ const std::tuple<double, double> quad(const double& x2coef1, const double& xcoef
                                       const double& x2coef2, const double& xcoef2, const double& num2);
 const std::tuple<double, double> quad_tp(const double& x2coef1, const double& xcoef1, const double& num1,
         const double& x2coef2, const double& xcoef2, const double& num2);
-const std::tuple<double, double, double> cubic(const double& x3coef1, const double& x2coef1, const double& xcoef1, const double& num1,
+const std::tuple<double, double, double> cubic(const double& error, const double& x3coef1, const double& x2coef1, const double& xcoef1, const double& num1,
         const double& x3coef2, const double& x2coef2, const double& xcoef2, const double& num2);
 const std::tuple<double, double, double, double> quartic(const double& x4coef1, const double& x3coef1, const double& x2coef1,
         const double& xcoef1, const double& num1,

@@ -137,6 +137,50 @@ const std::tuple<double, double> quad_tp(const double& x2coef1, const double& xc
     return std::tuple {x_val, y_val};
 }
 
+const double deg3(const double& a, const double& b, const double& c, const double& d, const double& g)
+{
+    return a * g * g * g + b * g * g + c * g + d;
+}
+const double new3(const double& a, const double& b, const double& c, const double& g)
+{
+    return 3 * a * g * g + 2 * b * g + c;
+}
+const std::tuple<double, double, double> cubic(const double& error, const double& x3coef1, const double& x2coef1,
+        const double& xcoef1, const double& num1, const double& x3coef2,
+        const double& x2coef2, const double& xcoef2, const double& num2)
+{
+    int count = 1;
+    double g = 0.01;
+    double a = x3coef1 - x3coef2;
+    double b = x2coef1 - x2coef2;
+    double c = xcoef1 - xcoef2;
+    double d = num1 - num2;
+
+    while (std::abs(deg3(a, b, c, d, g)) > error && count <= 100) {
+        count ++;
+
+        if (new3(a, b, c, g) == 0) {
+            g += 0.001;
+        }
+
+        g -= deg3(a, b, c, d, g) / new3(a, b, c, g);
+    }
+
+    if (a != 1) {
+        b /= a;
+        c /= a;
+        d /= a;
+        a = 1;
+    }
+
+    b += g;
+    c += (b * g);
+
+    auto [ans2, ans3] = quad(a, b, c, 0, 0, 0);
+
+    return std::tuple {g, ans2, ans3};
+}
+
 const std::string diff(const std::string& equ)
 {
     std::string equ_f = std::regex_replace(equ, std::regex(" "), "");
