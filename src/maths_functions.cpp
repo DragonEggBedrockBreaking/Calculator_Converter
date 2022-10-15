@@ -4,16 +4,19 @@
 #include <cmath>
 #include <regex>
 
-const double linear(const double& xcoef1, const double& num1, const double& xcoef2, const double& num2)
+const double
+linear(const double& xcoef1, const double& num1, const double& xcoef2, const double& num2)
 {
     double left = xcoef1 - xcoef2;
     double right = num2 - num1;
     return right / left;
 }
-const std::tuple<double, double> linear(const double& xcoef1_e1, const double& ycoef1_e1, const double& num1_e1,
-                                        const double& xcoef2_e1, const double& ycoef2_e1, const double& num2_e1,
-                                        const double& xcoef1_e2, const double& ycoef1_e2, const double& num1_e2,
-                                        const double& xcoef2_e2, const double& ycoef2_e2, const double& num2_e2)
+
+const std::tuple<double, double>
+linear(const double& xcoef1_e1, const double& ycoef1_e1, const double& num1_e1,
+       const double& xcoef2_e1, const double& ycoef2_e1, const double& num2_e1,
+       const double& xcoef1_e2, const double& ycoef1_e2, const double& num1_e2,
+       const double& xcoef2_e2, const double& ycoef2_e2, const double& num2_e2)
 {
     double left_e1 = xcoef1_e1 - xcoef2_e1;
     double right_y_e1 = (ycoef2_e1 - ycoef1_e1) / left_e1;
@@ -29,12 +32,14 @@ const std::tuple<double, double> linear(const double& xcoef1_e1, const double& y
 
     return std::tuple {x_val, y_val};
 }
-const std::tuple<double, double, double> linear(const double& xcoef1_e1, const double& ycoef1_e1, const double& zcoef1_e1, const double& num1_e1,
-        const double& xcoef2_e1, const double& ycoef2_e1, const double& zcoef2_e1, const double& num2_e1,
-        const double& xcoef1_e2, const double& ycoef1_e2, const double& zcoef1_e2, const double& num1_e2,
-        const double& xcoef2_e2, const double& ycoef2_e2, const double& zcoef2_e2, const double& num2_e2,
-        const double& xcoef1_e3, const double& ycoef1_e3, const double& zcoef1_e3, const double& num1_e3,
-        const double& xcoef2_e3, const double& ycoef2_e3, const double& zcoef2_e3, const double& num2_e3)
+
+const std::tuple<double, double, double>
+linear(const double& xcoef1_e1, const double& ycoef1_e1, const double& zcoef1_e1, const double& num1_e1,
+       const double& xcoef2_e1, const double& ycoef2_e1, const double& zcoef2_e1, const double& num2_e1,
+       const double& xcoef1_e2, const double& ycoef1_e2, const double& zcoef1_e2, const double& num1_e2,
+       const double& xcoef2_e2, const double& ycoef2_e2, const double& zcoef2_e2, const double& num2_e2,
+       const double& xcoef1_e3, const double& ycoef1_e3, const double& zcoef1_e3, const double& num1_e3,
+       const double& xcoef2_e3, const double& ycoef2_e3, const double& zcoef2_e3, const double& num2_e3)
 {
     double left_e1 = xcoef1_e1 - xcoef2_e1;
     double right_y_e1 = (ycoef2_e1 - ycoef1_e1) / left_e1;
@@ -63,14 +68,16 @@ const std::tuple<double, double, double> linear(const double& xcoef1_e1, const d
 
     return std::tuple {x, y, z};
 }
-const std::tuple<double, double, double, double> linear(const double& xcoef1_e1, const double& ycoef1_e1, const double& zcoef1_e1, const double& acoef1_e1, const double& num1_e1,
-        const double& xcoef2_e1, const double& ycoef2_e1, const double& zcoef2_e1, const double& acoef2_e1, const double& num2_e1,
-        const double& xcoef1_e2, const double& ycoef1_e2, const double& zcoef1_e2, const double& acoef1_e2, const double& num1_e2,
-        const double& xcoef2_e2, const double& ycoef2_e2, const double& zcoef2_e2, const double& acoef2_e2, const double& num2_e2,
-        const double& xcoef1_e3, const double& ycoef1_e3, const double& zcoef1_e3, const double& acoef1_e3, const double& num1_e3,
-        const double& xcoef2_e3, const double& ycoef2_e3, const double& zcoef2_e3, const double& acoef2_e3, const double& num2_e3,
-        const double& xcoef1_e4, const double& ycoef1_e4, const double& zcoef1_e4, const double& acoef1_e4, const double& num1_e4,
-        const double& xcoef2_e4, const double& ycoef2_e4, const double& zcoef2_e4, const double& acoef2_e4, const double& num2_e4)
+
+const std::tuple<double, double, double, double>
+linear(const double& xcoef1_e1, const double& ycoef1_e1, const double& zcoef1_e1, const double& acoef1_e1, const double& num1_e1,
+       const double& xcoef2_e1, const double& ycoef2_e1, const double& zcoef2_e1, const double& acoef2_e1, const double& num2_e1,
+       const double& xcoef1_e2, const double& ycoef1_e2, const double& zcoef1_e2, const double& acoef1_e2, const double& num1_e2,
+       const double& xcoef2_e2, const double& ycoef2_e2, const double& zcoef2_e2, const double& acoef2_e2, const double& num2_e2,
+       const double& xcoef1_e3, const double& ycoef1_e3, const double& zcoef1_e3, const double& acoef1_e3, const double& num1_e3,
+       const double& xcoef2_e3, const double& ycoef2_e3, const double& zcoef2_e3, const double& acoef2_e3, const double& num2_e3,
+       const double& xcoef1_e4, const double& ycoef1_e4, const double& zcoef1_e4, const double& acoef1_e4, const double& num1_e4,
+       const double& xcoef2_e4, const double& ycoef2_e4, const double& zcoef2_e4, const double& acoef2_e4, const double& num2_e4)
 {
     double left_e1 = xcoef1_e1 - xcoef2_e1;
     double right_y_e1 = (ycoef2_e1 - ycoef1_e1) / left_e1;
@@ -112,8 +119,9 @@ const std::tuple<double, double, double, double> linear(const double& xcoef1_e1,
     return std::tuple {x, y, z, a};
 }
 
-const std::tuple<double, double> quad(const double& x2coef1, const double& xcoef1, const double& num1,
-                                      const double& x2coef2, const double& xcoef2, const double& num2)
+const std::tuple<double, double>
+quad(const double& x2coef1, const double& xcoef1, const double& num1,
+     const double& x2coef2, const double& xcoef2, const double& num2)
 {
     double a = x2coef1 - x2coef2;
     double b = xcoef1 - xcoef2;
@@ -124,7 +132,9 @@ const std::tuple<double, double> quad(const double& x2coef1, const double& xcoef
 
     return std::tuple {pos_ans, neg_ans};
 }
-const std::tuple<double, double> quad_tp(const double& x2coef1, const double& xcoef1, const double& num1,
+
+const std::tuple<double, double>
+quad_tp(const double& x2coef1, const double& xcoef1, const double& num1,
         const double& x2coef2, const double& xcoef2, const double& num2)
 {
     double a = x2coef1 - x2coef2;
@@ -137,17 +147,22 @@ const std::tuple<double, double> quad_tp(const double& x2coef1, const double& xc
     return std::tuple {x_val, y_val};
 }
 
-const double fx3(const double& a, const double& b, const double& c, const double& d, const double& g)
+const double
+fx3(const double& a, const double& b, const double& c, const double& d, const double& g)
 {
     return a * g * g * g + b * g * g + c * g + d;
 }
-const double dydx3(const double& a, const double& b, const double& c, const double& g)
+
+const double
+dydx3(const double& a, const double& b, const double& c, const double& g)
 {
     return 3 * a * g * g + 2 * b * g + c;
 }
-const std::tuple<double, double, double> cubic(const double& error, const double& x3coef1, const double& x2coef1,
-        const double& xcoef1, const double& num1, const double& x3coef2,
-        const double& x2coef2, const double& xcoef2, const double& num2)
+
+const std::tuple<double, double, double>
+cubic(const double& error, const double& x3coef1, const double& x2coef1,
+      const double& xcoef1, const double& num1, const double& x3coef2,
+      const double& x2coef2, const double& xcoef2, const double& num2)
 {
     int count = 1;
     double g = 0.01;
@@ -180,16 +195,19 @@ const std::tuple<double, double, double> cubic(const double& error, const double
     return std::tuple {g, ans2, ans3};
 }
 
-const double fx4(const double& a, const double& b, const double& c, const double& d, const double& e, const double& g)
+const double
+fx4(const double& a, const double& b, const double& c, const double& d, const double& e, const double& g)
 {
     return a * g * g * g * g + b * g * g * g + c * g * g + d * g + e;
 }
-const double dydx4(const double& a, const double& b, const double& c, const double& d, const double& g)
+const double
+dydx4(const double& a, const double& b, const double& c, const double& d, const double& g)
 {
     return 4 * a * g * g * g + 3 * b * g * g + 2 * c * g + d;
 }
 
-const std::tuple<double, double, double, double> quartic(const double& error, const double& x4coef1, const double& x3coef1, const double& x2coef1,
+const std::tuple<double, double, double, double>
+quartic(const double& error, const double& x4coef1, const double& x3coef1, const double& x2coef1,
         const double& xcoef1, const double& num1,
         const double& x4coef2, const double& x3coef2, const double& x2coef2,
         const double& xcoef2, const double& num2)
@@ -228,7 +246,8 @@ const std::tuple<double, double, double, double> quartic(const double& error, co
     return std::tuple {g, ans2, ans3, ans4};
 }
 
-const std::string diff(const std::string& equ)
+const std::string
+diff(const std::string& equ)
 {
     std::string equ_f = std::regex_replace(equ, std::regex(" "), "");
     std::string final;
