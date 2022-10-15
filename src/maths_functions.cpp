@@ -287,3 +287,52 @@ diff(const std::string& equ)
 
     return final;
 }
+
+const std::string
+integr(const std::string& equ)
+{
+    std::string equ_f = std::regex_replace(equ, std::regex(" "), "");
+
+    if (equ_f.find("^-1+") != std::string::npos) {
+        return "Invalid (contains 1/x)";
+    }
+
+    std::string final;
+    std::vector<std::string> parts;
+    split(parts, equ_f, boost::is_any_of("+"));
+
+    for (std::string part : parts) {
+        if (part.find("x^") != std::string::npos) {
+            part = std::regex_replace(part, std::regex("\\^"), "");
+            std::vector<std::string> numbers;
+            split(numbers, part, boost::is_any_of("x"));
+
+            double first = std::stod(numbers.at(0));
+            double second = std::stod(numbers.at(1));
+
+            second++;
+            first /= second;
+
+            final += std::to_string(first) + "x^" + std::to_string(second) + " + ";
+        }
+        else if (part.find("x") != std::string::npos) {
+            std::vector<std::string> numbers;
+            split(numbers, part, boost::is_any_of("x"));
+
+            double first = std::stod(numbers.at(0)) / 2;
+
+            final += std::to_string(first) + "x^2 + ";
+        }
+        else {
+            final += part + "x + ";
+        }
+    }
+
+    if (final.ends_with(" + ")) {
+        final = std::regex_replace(final, std::regex(" + "), "");
+    }
+
+    final += " + c";
+
+    return final;
+}

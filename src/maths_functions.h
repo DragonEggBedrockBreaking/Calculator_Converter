@@ -60,5 +60,8 @@ pythag(const double& opp, const double& adj, const double& hypo, const unknown_t
 [[nodiscard]] const std::string
 diff(const std::string& equ);
 
+[[nodiscard]] const std::string
+integr(const std::string& equ);
+
 [[nodiscard]] const double
 bin_dist(const double& X, const double& n, const double& p);

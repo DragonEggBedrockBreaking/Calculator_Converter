@@ -44,6 +44,10 @@ void test()
     std::string diffed = diff("5x^7 + 8x^6 + 0.5x^3 + 14.8x + 4");
     std::cout << diffed << std::endl;
     std::cout << "35x^6 + 48x^5 + 1.5x^2 + 14.8" << std::endl << std::endl;
+
+    std::string integrated = integr("5x^7 + 4x + 9x^-5 + 3");
+    std::cout << integrated << std::endl;
+    std::cout << "0.625x^8 + 2x^2 + -2.25x^-4 + 3x + c" << std::endl << std::endl;
 }
 int main()
 {
