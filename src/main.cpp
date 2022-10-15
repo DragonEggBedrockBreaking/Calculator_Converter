@@ -36,6 +36,10 @@ void test()
     auto [cu1, cu2, cu3] = cubic(0.00001, 1, -4, -6, 0, 0, 0, 0, -5);
     std::cout << cu1 << ", " << cu2 << ", " << cu3 << std::endl;
     std::cout << "5, 0.6180339887, -1.618033989" << std::endl << std::endl;
+
+    auto [qu1, qu2, qu3, qu4] = quartic(0.00001, 1, 2, -41, -42, 0, 0, 0, 0, 0, -360);
+    std::cout << qu1 << ", " << qu2 << ", " << qu3 << ", " << qu4 << std::endl;
+    std::cout << "5, 3, -4, -6" << std::endl << std::endl;
 }
 int main()
 {

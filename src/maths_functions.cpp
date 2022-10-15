@@ -169,7 +169,6 @@ const std::tuple<double, double, double> cubic(const double& error, const double
     if (a != 1) {
         b /= a;
         c /= a;
-        d /= a;
         a = 1;
     }
 
@@ -179,6 +178,54 @@ const std::tuple<double, double, double> cubic(const double& error, const double
     auto [ans2, ans3] = quad(a, b, c, 0, 0, 0);
 
     return std::tuple {g, ans2, ans3};
+}
+
+const double fx4(const double& a, const double& b, const double& c, const double& d, const double& e, const double& g)
+{
+    return a * g * g * g * g + b * g * g * g + c * g * g + d * g + e;
+}
+const double dydx4(const double& a, const double& b, const double& c, const double& d, const double& g)
+{
+    return 4 * a * g * g * g + 3 * b * g * g + 2 * c * g + d;
+}
+
+const std::tuple<double, double, double, double> quartic(const double& error, const double& x4coef1, const double& x3coef1, const double& x2coef1,
+        const double& xcoef1, const double& num1,
+        const double& x4coef2, const double& x3coef2, const double& x2coef2,
+        const double& xcoef2, const double& num2)
+{
+    int count = 1;
+    double g = 0.01;
+    double a = x4coef1 - x4coef2;
+    double b = x3coef1 - x3coef2;
+    double c = x2coef1 - x2coef2;
+    double d = xcoef1 - xcoef2;
+    double e = num1 - num2;
+
+    while (std::abs(fx4(a, b, c, d, e, g)) > error && count <= 100) {
+        count ++;
+
+        if (dydx4(a, b, c, d, g) == 0) {
+            g += 0.001;
+        }
+
+        g -= fx4(a, b, c, d, e, g) / dydx4(a, b, c, d, g);
+    }
+
+    if (a != 1) {
+        b /= a;
+        c /= a;
+        d /= a;
+        a = 1;
+    }
+
+    b += g;
+    c += (b * g);
+    d += (c * g);
+
+    auto [ans2, ans3, ans4] = cubic(error, a, b, c, d, 0, 0, 0, 0);
+
+    return std::tuple {g, ans2, ans3, ans4};
 }
 
 const std::string diff(const std::string& equ)

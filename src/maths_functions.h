@@ -29,7 +29,7 @@
         const double& x2coef2, const double& xcoef2, const double& num2);
 [[nodiscard]] const std::tuple<double, double, double> cubic(const double& error, const double& x3coef1, const double& x2coef1, const double& xcoef1, const double& num1,
         const double& x3coef2, const double& x2coef2, const double& xcoef2, const double& num2);
-[[nodiscard]] const std::tuple<double, double, double, double> quartic(const double& x4coef1, const double& x3coef1, const double& x2coef1,
+[[nodiscard]] const std::tuple<double, double, double, double> quartic(const double& error, const double& x4coef1, const double& x3coef1, const double& x2coef1,
         const double& xcoef1, const double& num1,
         const double& x4coef2, const double& x3coef2, const double& x2coef2,
         const double& xcoef2, const double& num2);
