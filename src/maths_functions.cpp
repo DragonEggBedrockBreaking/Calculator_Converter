@@ -1,7 +1,23 @@
 #include "maths_functions.h"
 #include <boost/algorithm/string.hpp>
+#include "muParser.h"
+#include "lib/nml.h"
 #include <cmath>
 #include <regex>
+
+const double
+basic(const std::string& expression)
+{
+    try {
+        const std::string expr = std::regex_replace(expression, std::regex(" "), "");
+        mu::Parser p;
+        p.SetExpr(expr);
+        return p.Eval();
+    }
+    catch (mu::Parser::exception_type &e) {
+        return NAN;
+    }
+}
 
 const double
 linear(const double& xcoef1, const double& num1, const double& xcoef2, const double& num2)
@@ -17,19 +33,28 @@ linear(const double& xcoef1_e1, const double& ycoef1_e1, const double& num1_e1,
        const double& xcoef1_e2, const double& ycoef1_e2, const double& num1_e2,
        const double& xcoef2_e2, const double& ycoef2_e2, const double& num2_e2)
 {
-    const double left_e1 = xcoef1_e1 - xcoef2_e1;
-    const double right_y_e1 = (ycoef2_e1 - ycoef1_e1) / left_e1;
-    const double right_n_e1 = (num2_e1 - num1_e1) / left_e1;
+    const double xcoef_e1 = xcoef1_e1 - xcoef2_e1;
+    const double ycoef_e1 = ycoef1_e1 - ycoef2_e1;
+    const double num_e1 = num2_e1 - num1_e1;
 
-    const double left_e2 = xcoef1_e2 - xcoef2_e2;
-    const double right_y_e2 = (ycoef2_e2 - ycoef1_e2) / left_e2;
-    const double right_n_e2 = (num2_e2 - num1_e2) / left_e2;
+    const double xcoef_e2 = xcoef1_e2 - xcoef2_e2;
+    const double ycoef_e2 = ycoef1_e2 - ycoef2_e2;
+    const double num_e2 = num2_e2 - num1_e2;
 
-    const double y_val = linear(right_y_e1, right_n_e1, right_y_e2, right_n_e2);
-    const double x_val = linear(xcoef1_e1, ycoef1_e1 * y_val + num1_e1,
-                                xcoef2_e1, ycoef2_e1 * y_val + num2_e1);
+    double matrix[6] {
+        xcoef_e1, ycoef_e1, num_e1,
+        xcoef_e2, ycoef_e2, num_e2
+    };
 
-    return std::tuple {x_val, y_val};
+    nml_mat *mat = nml_mat_from(2, 3, 6, matrix);
+    nml_mat *rrefm = nml_mat_rref(mat);
+
+    const std::tuple return_value {rrefm->data[0][2], rrefm->data[1][2]};
+
+    nml_mat_free(mat);
+    nml_mat_free(rrefm);
+
+    return return_value;
 }
 
 const std::tuple<double, double, double>
@@ -40,30 +65,36 @@ linear(const double& xcoef1_e1, const double& ycoef1_e1, const double& zcoef1_e1
        const double& xcoef1_e3, const double& ycoef1_e3, const double& zcoef1_e3, const double& num1_e3,
        const double& xcoef2_e3, const double& ycoef2_e3, const double& zcoef2_e3, const double& num2_e3)
 {
-    const double left_e1 = xcoef1_e1 - xcoef2_e1;
-    const double right_y_e1 = (ycoef2_e1 - ycoef1_e1) / left_e1;
-    const double right_z_e1 = (zcoef2_e1 - zcoef1_e1) / left_e1;
-    const double right_n_e1 = (num2_e1 - num1_e1) / left_e1;
+    const double xcoef_e1 = xcoef1_e1 - xcoef2_e1;
+    const double ycoef_e1 = ycoef1_e1 - ycoef2_e1;
+    const double zcoef_e1 = zcoef1_e1 - zcoef2_e1;
+    const double num_e1 = num2_e1 - num1_e1;
 
-    const double left_e2 = xcoef1_e2 - xcoef2_e2;
-    const double right_y_e2 = (ycoef2_e2 - ycoef1_e2) / left_e2;
-    const double right_z_e2 = (zcoef2_e2 - zcoef1_e2) / left_e2;
-    const double right_n_e2 = (num2_e2 - num1_e2) / left_e2;
+    const double xcoef_e2 = xcoef1_e2 - xcoef2_e2;
+    const double ycoef_e2 = ycoef1_e2 - ycoef2_e2;
+    const double zcoef_e2 = zcoef1_e2 - zcoef2_e2;
+    const double num_e2 = num2_e2 - num1_e2;
 
-    const double left_e3 = xcoef1_e3 - xcoef2_e3;
-    const double right_y_e3 = (ycoef2_e3 - ycoef1_e3) / left_e3;
-    const double right_z_e3 = (zcoef2_e3 - zcoef1_e3) / left_e3;
-    const double right_n_e3 = (num2_e3 - num1_e3) / left_e3;
+    const double xcoef_e3 = xcoef1_e3 - xcoef2_e3;
+    const double ycoef_e3 = ycoef1_e3 - ycoef2_e3;
+    const double zcoef_e3 = zcoef1_e3 - zcoef2_e3;
+    const double num_e3 = num2_e3 - num1_e3;
 
-    const auto [y, z] = linear(right_y_e1, right_z_e1, right_n_e1,
-                               right_y_e2, right_z_e2, right_n_e2,
-                               right_y_e1, right_z_e1, right_n_e1,
-                               right_y_e3, right_z_e3, right_n_e3);
+    double matrix[12] {
+        xcoef_e1, ycoef_e1, zcoef_e1, num_e1,
+        xcoef_e2, ycoef_e2, zcoef_e2, num_e2,
+        xcoef_e3, ycoef_e3, zcoef_e3, num_e3
+    };
 
-    const double x = linear(xcoef1_e1, ycoef1_e1 * y + zcoef1_e1 * z + num1_e1,
-                            xcoef2_e1, ycoef2_e1 * y + zcoef2_e1 * z + num2_e1);
+    nml_mat *mat = nml_mat_from(3, 4, 12, matrix);
+    nml_mat *rrefm = nml_mat_rref(mat);
 
-    return std::tuple {x, y, z};
+    const std::tuple return_value {rrefm->data[0][3], rrefm->data[1][3], rrefm->data[2][3]};
+
+    nml_mat_free(mat);
+    nml_mat_free(rrefm);
+
+    return return_value;
 }
 
 const std::tuple<double, double, double, double>
@@ -76,7 +107,48 @@ linear(const double& xcoef1_e1, const double& ycoef1_e1, const double& zcoef1_e1
        const double& xcoef1_e4, const double& ycoef1_e4, const double& zcoef1_e4, const double& acoef1_e4, const double& num1_e4,
        const double& xcoef2_e4, const double& ycoef2_e4, const double& zcoef2_e4, const double& acoef2_e4, const double& num2_e4)
 {
-    const double left_e1 = xcoef1_e1 - xcoef2_e1;
+    const double xcoef_e1 = xcoef1_e1 - xcoef2_e1;
+    const double ycoef_e1 = ycoef1_e1 - ycoef2_e1;
+    const double zcoef_e1 = zcoef1_e1 - zcoef2_e1;
+    const double acoef_e1 = acoef1_e1 - acoef2_e1;
+    const double num_e1 = num2_e1 - num1_e1;
+
+    const double xcoef_e2 = xcoef1_e2 - xcoef2_e2;
+    const double ycoef_e2 = ycoef1_e2 - ycoef2_e2;
+    const double zcoef_e2 = zcoef1_e2 - zcoef2_e2;
+    const double acoef_e2 = acoef1_e2 - acoef2_e2;
+    const double num_e2 = num2_e2 - num1_e2;
+
+    const double xcoef_e3 = xcoef1_e3 - xcoef2_e3;
+    const double ycoef_e3 = ycoef1_e3 - ycoef2_e3;
+    const double zcoef_e3 = zcoef1_e3 - zcoef2_e3;
+    const double acoef_e3 = acoef1_e3 - acoef2_e1;
+    const double num_e3 = num2_e3 - num1_e3;
+
+    const double xcoef_e4 = xcoef1_e4 - xcoef2_e4;
+    const double ycoef_e4 = ycoef1_e4 - ycoef2_e4;
+    const double zcoef_e4 = zcoef1_e4 - zcoef2_e4;
+    const double acoef_e4 = acoef1_e4 - acoef2_e4;
+    const double num_e4 = num2_e4 - num1_e4;
+
+    double matrix[20] {
+        xcoef_e1, ycoef_e1, zcoef_e1, acoef_e1, num_e1,
+        xcoef_e2, ycoef_e2, zcoef_e2, acoef_e2, num_e2,
+        xcoef_e3, ycoef_e3, zcoef_e3, acoef_e3, num_e3,
+        xcoef_e4, ycoef_e4, zcoef_e4, acoef_e4, num_e4
+    };
+
+    nml_mat *mat = nml_mat_from(4, 5, 12, matrix);
+    nml_mat *rrefm = nml_mat_rref(mat);
+
+    const std::tuple return_value {rrefm->data[0][4], rrefm->data[1][4], rrefm->data[2][4], rrefm->data[3][4]};
+
+    nml_mat_free(mat);
+    nml_mat_free(rrefm);
+
+    return return_value;
+
+    /*const double left_e1 = xcoef1_e1 - xcoef2_e1;
     const double right_y_e1 = (ycoef2_e1 - ycoef1_e1) / left_e1;
     const double right_z_e1 = (zcoef2_e1 - zcoef1_e1) / left_e1;
     const double right_a_e1 = (acoef2_e1 - acoef1_e1) / left_e1;
@@ -110,7 +182,7 @@ linear(const double& xcoef1_e1, const double& ycoef1_e1, const double& zcoef1_e1
     const double x = linear(xcoef1_e1, ycoef1_e1 * y + zcoef1_e1 * z + acoef1_e1 * a + num1_e1,
                             xcoef2_e1, ycoef2_e1 * y + zcoef2_e1 * z + acoef2_e1 * a + num2_e1);
 
-    return std::tuple {x, y, z, a};
+    return std::tuple {x, y, z, a};*/
 }
 
 const std::tuple<double, double>

@@ -4,6 +4,9 @@
 #include <tuple>
 
 [[nodiscard]] const double
+basic(const std::string& expression);
+
+[[nodiscard]] const double
 linear(const double& xcoef1, const double& num1, const double& xcoef2, const double& num2);
 
 [[nodiscard]] const std::tuple<double, double>

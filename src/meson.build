@@ -1,4 +1,5 @@
 project('converter',
+  'c',
   'cpp',
   version: '0.1.0',
   default_options: [
@@ -14,6 +15,8 @@ executable(
     'lib/imgui_impl_glfw.cpp',
     'lib/imgui_impl_opengl3.cpp',
     'lib/imgui_stdlib.cpp',
+    'lib/nml.c',
+    'lib/nml_util.c',
     'main.cpp',
     'maths_functions.cpp'
   ],
@@ -21,7 +24,9 @@ executable(
     dependency('imgui'),
     dependency('glfw3'),
     dependency('glew'),
-    dependency('boost')
+    dependency('boost'),
+    dependency('muparser'),
+    dependency('fmt')
   ],
   cpp_args: [
     '-Wno-deprecated-declarations'
