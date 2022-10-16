@@ -532,6 +532,24 @@ int main()
                     ImGui::SameLine();
                     ImGui::Text("%s", fmt::format("Answers: x = {}, x = {}, x = {}, x = {}", ans1, ans2, ans3, ans4).c_str());
                 }
+
+            case 3:
+                static std::string equation;
+                ImGui::InputText("Mathematical Equation", &equation);
+
+                try {
+                    ImGui::Text("%s", fmt::format("Differentiated: {}", diff(equation)).c_str());
+                }
+                catch (std::invalid_argument) {
+                    ImGui::Text("Differentiated:");
+                }
+
+                try {
+                    ImGui::Text("%s", fmt::format("Integrated: {}", integr(equation)).c_str());
+                }
+                catch (std::invalid_argument) {
+                    ImGui::Text("Integrated:");
+                }
             }
 
             ImGui::End();

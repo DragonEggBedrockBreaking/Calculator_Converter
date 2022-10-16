@@ -330,7 +330,14 @@ pythag(const double& oppo, const double& adja, const double& hypo, const unknown
 const std::string
 diff(const std::string& equ)
 {
-    const std::string equ_f = std::regex_replace(equ, std::regex(" "), "");
+    std::string equ_f = std::regex_replace(equ, std::regex(" "), "");
+    equ_f = std::regex_replace(equ_f, std::regex("\\+x"), " 1x");
+    equ_f = std::regex_replace(equ_f, std::regex("\\-x"), " 1x");
+
+    if (equ_f.starts_with("x")) {
+        equ_f = "1" + equ_f;
+    }
+
     std::string final;
     std::vector<std::string> parts;
     split(parts, equ_f, boost::is_any_of("+"));
@@ -364,7 +371,9 @@ diff(const std::string& equ)
     }
 
     if (final.ends_with(" + ")) {
-        final = std::regex_replace(final, std::regex(" + "), "");
+        final.pop_back();
+        final.pop_back();
+        final.pop_back();
     }
 
     return final;
@@ -373,7 +382,13 @@ diff(const std::string& equ)
 const std::string
 integr(const std::string& equ)
 {
-    const std::string equ_f = std::regex_replace(equ, std::regex(" "), "");
+    std::string equ_f = std::regex_replace(equ, std::regex(" "), "");
+    equ_f = std::regex_replace(equ_f, std::regex("\\+x"), " 1x");
+    equ_f = std::regex_replace(equ_f, std::regex("\\-x"), " 1x");
+
+    if (equ_f.starts_with("x")) {
+        equ_f = "1" + equ_f;
+    }
 
     if (equ_f.find("^-1+") != std::string::npos) {
         return "Invalid (contains 1/x)";
@@ -411,7 +426,9 @@ integr(const std::string& equ)
     }
 
     if (final.ends_with(" + ")) {
-        final = std::regex_replace(final, std::regex(" + "), "");
+        final.pop_back();
+        final.pop_back();
+        final.pop_back();
     }
 
     final += " + c";
