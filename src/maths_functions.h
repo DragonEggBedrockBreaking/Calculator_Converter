@@ -51,12 +51,6 @@ quartic(const double& error, const double& x4coef1, const double& x3coef1, const
         const double& x4coef2, const double& x3coef2, const double& x2coef2,
         const double& xcoef2, const double& num2);
 
-
-enum unknown_side { opp, adj, hyp };
-
-[[nodiscard]] const double
-pythag(const double& oppo, const double& adja, const double& hypo, const unknown_side& type);
-
 [[nodiscard]] const std::string
 diff(const std::string& equ);
 
