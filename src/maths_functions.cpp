@@ -147,42 +147,6 @@ linear(const double& xcoef1_e1, const double& ycoef1_e1, const double& zcoef1_e1
     nml_mat_free(rrefm);
 
     return return_value;
-
-    /*const double left_e1 = xcoef1_e1 - xcoef2_e1;
-    const double right_y_e1 = (ycoef2_e1 - ycoef1_e1) / left_e1;
-    const double right_z_e1 = (zcoef2_e1 - zcoef1_e1) / left_e1;
-    const double right_a_e1 = (acoef2_e1 - acoef1_e1) / left_e1;
-    const double right_n_e1 = (num2_e1 - num1_e1) / left_e1;
-
-    const double left_e2 = xcoef1_e2 - xcoef2_e2;
-    const double right_y_e2 = (ycoef2_e2 - ycoef1_e2) / left_e2;
-    const double right_z_e2 = (zcoef2_e2 - zcoef1_e2) / left_e2;
-    const double right_a_e2 = (acoef2_e2 - acoef1_e2) / left_e2;
-    const double right_n_e2 = (num2_e2 - num1_e2) / left_e2;
-
-    const double left_e3 = xcoef1_e3 - xcoef2_e3;
-    const double right_y_e3 = (ycoef2_e3 - ycoef1_e3) / left_e3;
-    const double right_z_e3 = (zcoef2_e3 - zcoef1_e3) / left_e3;
-    const double right_a_e3 = (acoef2_e3 - acoef1_e3) / left_e3;
-    const double right_n_e3 = (num2_e3 - num1_e3) / left_e3;
-
-    const double left_e4 = xcoef1_e4 - xcoef2_e4;
-    const double right_y_e4 = (ycoef2_e4 - ycoef1_e4) / left_e4;
-    const double right_z_e4 = (zcoef2_e4 - zcoef1_e4) / left_e4;
-    const double right_a_e4 = (acoef2_e4 - acoef1_e4) / left_e4;
-    const double right_n_e4 = (num2_e4 - num1_e4) / left_e4;
-
-    const auto [y, z, a] = linear(right_y_e1, right_z_e1, right_a_e1, right_n_e1,
-                                  right_y_e2, right_z_e2, right_a_e2, right_n_e2,
-                                  right_y_e1, right_z_e1, right_a_e1, right_n_e1,
-                                  right_y_e3, right_z_e3, right_a_e3, right_n_e3,
-                                  right_y_e1, right_z_e1, right_a_e1, right_n_e1,
-                                  right_y_e4, right_z_e4, right_a_e4, right_n_e4);
-
-    const double x = linear(xcoef1_e1, ycoef1_e1 * y + zcoef1_e1 * z + acoef1_e1 * a + num1_e1,
-                            xcoef2_e1, ycoef2_e1 * y + zcoef2_e1 * z + acoef2_e1 * a + num2_e1);
-
-    return std::tuple {x, y, z, a};*/
 }
 
 const std::tuple<double, double>

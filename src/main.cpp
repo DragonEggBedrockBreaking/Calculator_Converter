@@ -550,6 +550,37 @@ int main()
                 catch (std::invalid_argument) {
                     ImGui::Text("Integrated:");
                 }
+
+                break;
+
+            case 4:
+                ImGui::PushItemWidth(55);
+
+                ImGui::InputDouble("P##foo1", &xcoef1, 0.0, 0.0, "%.5f");
+                ImGui::SameLine();
+                ImGui::InputDouble("=##foo2", &xcoef2, 0.0, 0.0, "%.5f");
+                ImGui::SameLine();
+                ImGui::Text("%s", fmt::format("{}", npr(xcoef1, xcoef2)).c_str());
+
+                ImGui::InputDouble("C##foo3", &ycoef1_e1, 0.0, 0.0, "%.5f");
+                ImGui::SameLine();
+                ImGui::InputDouble("=##foo4", &ycoef2_e1, 0.0, 0.0, "%.5f");
+                ImGui::SameLine();
+                ImGui::Text("%s", fmt::format("{}", ncr(ycoef1_e1, ycoef2_e1)).c_str());
+
+                ImGui::Text("X ~ B(");
+                ImGui::SameLine();
+                ImGui::InputDouble(", ##foo5", &zcoef1_e1, 0.0, 0.0, "%.5f");
+                ImGui::SameLine();
+                ImGui::InputDouble(")##foo6", &zcoef1_e2, 0.0, 0.0, "%.5f");
+                ImGui::SameLine();
+                ImGui::Text("P(X =");
+                ImGui::SameLine();
+                ImGui::InputDouble(") =##foo7", &zcoef1_e3, 0.0, 0.0, "%.5f");
+                ImGui::SameLine();
+                ImGui::Text("%s", fmt::format("{}", bin_dist(zcoef1_e3, zcoef1_e1, zcoef1_e2)).c_str());
+
+                break;
             }
 
             ImGui::End();
