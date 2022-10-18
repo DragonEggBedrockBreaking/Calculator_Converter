@@ -879,8 +879,7 @@ nml_mat_lup *nml_mat_lup_solve(nml_mat *m) {
     // Retrieves the row with the biggest element for column (j)
     pivot = _nml_mat_absmaxr(U, j);
     if (fabs(U->data[pivot][j]) < NML_MIN_COEF) {
-      NML_ERROR(CANNOT_LU_MATRIX_DEGENERATE);
-      return NULL;
+      return nml_mat_lup_new(L, U, P, 0); // MODIFIED FROM ORIGINAL CODE
     }
     if (pivot!=j) {
       // Pivots LU and P accordingly to the rule

@@ -33,6 +33,8 @@ linear(const double& xcoef1_e1, const double& ycoef1_e1, const double& num1_e1,
        const double& xcoef1_e2, const double& ycoef1_e2, const double& num1_e2,
        const double& xcoef2_e2, const double& ycoef2_e2, const double& num2_e2)
 {
+    std::tuple<double, double> return_value;
+
     const double xcoef_e1 = xcoef1_e1 - xcoef2_e1;
     const double ycoef_e1 = ycoef1_e1 - ycoef2_e1;
     const double num_e1 = num2_e1 - num1_e1;
@@ -41,18 +43,34 @@ linear(const double& xcoef1_e1, const double& ycoef1_e1, const double& num1_e1,
     const double ycoef_e2 = ycoef1_e2 - ycoef2_e2;
     const double num_e2 = num2_e2 - num1_e2;
 
-    double matrix[6] {
-        xcoef_e1, ycoef_e1, num_e1,
-        xcoef_e2, ycoef_e2, num_e2
+    double small_matrix[4] {
+        xcoef_e1, ycoef_e1,
+        xcoef_e2, ycoef_e2
     };
 
-    nml_mat *mat = nml_mat_from(2, 3, 6, matrix);
-    nml_mat *rrefm = nml_mat_rref(mat);
+    nml_mat *sm_mat = nml_mat_from(2, 2, 4, small_matrix);
+    nml_mat_lup *mat_lup = nml_mat_lup_solve(sm_mat);
 
-    const std::tuple return_value {rrefm->data[0][2], rrefm->data[1][2]};
+    if (nml_mat_det(mat_lup) == 0) {
+        return_value = std::tuple {NAN, NAN};
+    }
+    else {
+        double matrix[6] {
+            xcoef_e1, ycoef_e1, num_e1,
+            xcoef_e2, ycoef_e2, num_e2
+        };
 
-    nml_mat_free(mat);
-    nml_mat_free(rrefm);
+        nml_mat *mat = nml_mat_from(2, 3, 6, matrix);
+        nml_mat *rrefm = nml_mat_rref(mat);
+
+        return_value = {rrefm->data[0][2], rrefm->data[1][2]};
+
+        nml_mat_free(mat);
+        nml_mat_free(rrefm);
+    }
+
+    nml_mat_free(sm_mat);
+    nml_mat_lup_free(mat_lup);
 
     return return_value;
 }
@@ -65,6 +83,8 @@ linear(const double& xcoef1_e1, const double& ycoef1_e1, const double& zcoef1_e1
        const double& xcoef1_e3, const double& ycoef1_e3, const double& zcoef1_e3, const double& num1_e3,
        const double& xcoef2_e3, const double& ycoef2_e3, const double& zcoef2_e3, const double& num2_e3)
 {
+    std::tuple<double, double, double> return_value;
+
     const double xcoef_e1 = xcoef1_e1 - xcoef2_e1;
     const double ycoef_e1 = ycoef1_e1 - ycoef2_e1;
     const double zcoef_e1 = zcoef1_e1 - zcoef2_e1;
@@ -80,33 +100,52 @@ linear(const double& xcoef1_e1, const double& ycoef1_e1, const double& zcoef1_e1
     const double zcoef_e3 = zcoef1_e3 - zcoef2_e3;
     const double num_e3 = num2_e3 - num1_e3;
 
-    double matrix[12] {
-        xcoef_e1, ycoef_e1, zcoef_e1, num_e1,
-        xcoef_e2, ycoef_e2, zcoef_e2, num_e2,
-        xcoef_e3, ycoef_e3, zcoef_e3, num_e3
+    double small_matrix[9] {
+        xcoef_e1, ycoef_e1, zcoef_e1,
+        xcoef_e2, ycoef_e2, zcoef_e2,
+        xcoef_e3, ycoef_e3, zcoef_e3
     };
 
-    nml_mat *mat = nml_mat_from(3, 4, 12, matrix);
-    nml_mat *rrefm = nml_mat_rref(mat);
+    nml_mat *sm_mat = nml_mat_from(2, 2, 4, small_matrix);
+    nml_mat_lup *mat_lup = nml_mat_lup_solve(sm_mat);
 
-    const std::tuple return_value {rrefm->data[0][3], rrefm->data[1][3], rrefm->data[2][3]};
+    if (nml_mat_det(mat_lup) == 0) {
+        return_value = std::tuple {NAN, NAN, NAN};
+    }
+    else {
+        double matrix[12] {
+            xcoef_e1, ycoef_e1, zcoef_e1, num_e1,
+            xcoef_e2, ycoef_e2, zcoef_e2, num_e2,
+            xcoef_e3, ycoef_e3, zcoef_e3, num_e3
+        };
 
-    nml_mat_free(mat);
-    nml_mat_free(rrefm);
+        nml_mat *mat = nml_mat_from(3, 4, 12, matrix);
+        nml_mat *rrefm = nml_mat_rref(mat);
+
+        return_value = {rrefm->data[0][3], rrefm->data[1][3], rrefm->data[2][3]};
+
+        nml_mat_free(mat);
+        nml_mat_free(rrefm);
+    }
+
+    nml_mat_free(sm_mat);
+    nml_mat_lup_free(mat_lup);
 
     return return_value;
 }
 
 const std::tuple<double, double, double, double>
-linear(const double& xcoef1_e1, const double& ycoef1_e1, const double& zcoef1_e1, const double& acoef1_e1, const double& num1_e1,
-       const double& xcoef2_e1, const double& ycoef2_e1, const double& zcoef2_e1, const double& acoef2_e1, const double& num2_e1,
-       const double& xcoef1_e2, const double& ycoef1_e2, const double& zcoef1_e2, const double& acoef1_e2, const double& num1_e2,
-       const double& xcoef2_e2, const double& ycoef2_e2, const double& zcoef2_e2, const double& acoef2_e2, const double& num2_e2,
-       const double& xcoef1_e3, const double& ycoef1_e3, const double& zcoef1_e3, const double& acoef1_e3, const double& num1_e3,
-       const double& xcoef2_e3, const double& ycoef2_e3, const double& zcoef2_e3, const double& acoef2_e3, const double& num2_e3,
-       const double& xcoef1_e4, const double& ycoef1_e4, const double& zcoef1_e4, const double& acoef1_e4, const double& num1_e4,
-       const double& xcoef2_e4, const double& ycoef2_e4, const double& zcoef2_e4, const double& acoef2_e4, const double& num2_e4)
+linear(const double & xcoef1_e1, const double & ycoef1_e1, const double & zcoef1_e1, const double & acoef1_e1, const double & num1_e1,
+       const double & xcoef2_e1, const double & ycoef2_e1, const double & zcoef2_e1, const double & acoef2_e1, const double & num2_e1,
+       const double & xcoef1_e2, const double & ycoef1_e2, const double & zcoef1_e2, const double & acoef1_e2, const double & num1_e2,
+       const double & xcoef2_e2, const double & ycoef2_e2, const double & zcoef2_e2, const double & acoef2_e2, const double & num2_e2,
+       const double & xcoef1_e3, const double & ycoef1_e3, const double & zcoef1_e3, const double & acoef1_e3, const double & num1_e3,
+       const double & xcoef2_e3, const double & ycoef2_e3, const double & zcoef2_e3, const double & acoef2_e3, const double & num2_e3,
+       const double & xcoef1_e4, const double & ycoef1_e4, const double & zcoef1_e4, const double & acoef1_e4, const double & num1_e4,
+       const double & xcoef2_e4, const double & ycoef2_e4, const double & zcoef2_e4, const double & acoef2_e4, const double & num2_e4)
 {
+    std::tuple<double, double, double, double> return_value;
+
     const double xcoef_e1 = xcoef1_e1 - xcoef2_e1;
     const double ycoef_e1 = ycoef1_e1 - ycoef2_e1;
     const double zcoef_e1 = zcoef1_e1 - zcoef2_e1;
@@ -131,27 +170,45 @@ linear(const double& xcoef1_e1, const double& ycoef1_e1, const double& zcoef1_e1
     const double acoef_e4 = acoef1_e4 - acoef2_e4;
     const double num_e4 = num2_e4 - num1_e4;
 
-    double matrix[20] {
-        xcoef_e1, ycoef_e1, zcoef_e1, acoef_e1, num_e1,
-        xcoef_e2, ycoef_e2, zcoef_e2, acoef_e2, num_e2,
-        xcoef_e3, ycoef_e3, zcoef_e3, acoef_e3, num_e3,
-        xcoef_e4, ycoef_e4, zcoef_e4, acoef_e4, num_e4
+    double small_matrix[16] {
+        xcoef_e1, ycoef_e1, zcoef_e1, acoef_e1,
+        xcoef_e2, ycoef_e2, zcoef_e2, acoef_e2,
+        xcoef_e3, ycoef_e3, zcoef_e3, acoef_e3,
+        xcoef_e4, ycoef_e4, zcoef_e4, acoef_e4
     };
 
-    nml_mat *mat = nml_mat_from(4, 5, 12, matrix);
-    nml_mat *rrefm = nml_mat_rref(mat);
+    nml_mat *sm_mat = nml_mat_from(2, 2, 4, small_matrix);
+    nml_mat_lup *mat_lup = nml_mat_lup_solve(sm_mat);
 
-    const std::tuple return_value {rrefm->data[0][4], rrefm->data[1][4], rrefm->data[2][4], rrefm->data[3][4]};
+    if (nml_mat_det(mat_lup) == 0) {
+        return_value = std::tuple {NAN, NAN, NAN, NAN};
+    }
+    else {
+        double matrix[20] {
+            xcoef_e1, ycoef_e1, zcoef_e1, acoef_e1, num_e1,
+            xcoef_e2, ycoef_e2, zcoef_e2, acoef_e2, num_e2,
+            xcoef_e3, ycoef_e3, zcoef_e3, acoef_e3, num_e3,
+            xcoef_e4, ycoef_e4, zcoef_e4, acoef_e4, num_e4
+        };
 
-    nml_mat_free(mat);
-    nml_mat_free(rrefm);
+        nml_mat *mat = nml_mat_from(4, 5, 12, matrix);
+        nml_mat *rrefm = nml_mat_rref(mat);
+
+        return_value = {rrefm->data[0][4], rrefm->data[1][4], rrefm->data[2][4], rrefm->data[3][4]};
+
+        nml_mat_free(mat);
+        nml_mat_free(rrefm);
+    }
+
+    nml_mat_free(sm_mat);
+    nml_mat_lup_free(mat_lup);
 
     return return_value;
 }
 
 const std::tuple<double, double>
-quad(const double& x2coef1, const double& xcoef1, const double& num1,
-     const double& x2coef2, const double& xcoef2, const double& num2)
+quad(const double & x2coef1, const double & xcoef1, const double & num1,
+     const double & x2coef2, const double & xcoef2, const double & num2)
 {
     const double a = x2coef1 - x2coef2;
     const double b = xcoef1 - xcoef2;
@@ -164,8 +221,8 @@ quad(const double& x2coef1, const double& xcoef1, const double& num1,
 }
 
 const std::tuple<double, double>
-quad_tp(const double& x2coef1, const double& xcoef1, const double& num1,
-        const double& x2coef2, const double& xcoef2, const double& num2)
+quad_tp(const double & x2coef1, const double & xcoef1, const double & num1,
+        const double & x2coef2, const double & xcoef2, const double & num2)
 {
     const double a = x2coef1 - x2coef2;
     const double b = xcoef1 - xcoef2;
@@ -178,21 +235,21 @@ quad_tp(const double& x2coef1, const double& xcoef1, const double& num1,
 }
 
 const double
-fx3(const double& a, const double& b, const double& c, const double& d, const double& g)
+fx3(const double & a, const double & b, const double & c, const double & d, const double & g)
 {
     return a * g * g * g + b * g * g + c * g + d;
 }
 
 const double
-dydx3(const double& a, const double& b, const double& c, const double& g)
+dydx3(const double & a, const double & b, const double & c, const double & g)
 {
     return 3 * a * g * g + 2 * b * g + c;
 }
 
 const std::tuple<double, double, double>
-cubic(const double& error, const double& x3coef1, const double& x2coef1,
-      const double& xcoef1, const double& num1, const double& x3coef2,
-      const double& x2coef2, const double& xcoef2, const double& num2)
+cubic(const double & error, const double & x3coef1, const double & x2coef1,
+      const double & xcoef1, const double & num1, const double & x3coef2,
+      const double & x2coef2, const double & xcoef2, const double & num2)
 {
     int count = 1;
     double g = 0.01;
@@ -226,21 +283,21 @@ cubic(const double& error, const double& x3coef1, const double& x2coef1,
 }
 
 const double
-fx4(const double& a, const double& b, const double& c, const double& d, const double& e, const double& g)
+fx4(const double & a, const double & b, const double & c, const double & d, const double & e, const double & g)
 {
     return a * g * g * g * g + b * g * g * g + c * g * g + d * g + e;
 }
 const double
-dydx4(const double& a, const double& b, const double& c, const double& d, const double& g)
+dydx4(const double & a, const double & b, const double & c, const double & d, const double & g)
 {
     return 4 * a * g * g * g + 3 * b * g * g + 2 * c * g + d;
 }
 
 const std::tuple<double, double, double, double>
-quartic(const double& error, const double& x4coef1, const double& x3coef1, const double& x2coef1,
-        const double& xcoef1, const double& num1,
-        const double& x4coef2, const double& x3coef2, const double& x2coef2,
-        const double& xcoef2, const double& num2)
+quartic(const double & error, const double & x4coef1, const double & x3coef1, const double & x2coef1,
+        const double & xcoef1, const double & num1,
+        const double & x4coef2, const double & x3coef2, const double & x2coef2,
+        const double & xcoef2, const double & num2)
 {
     int count = 1;
     double g = 0.01;
@@ -277,7 +334,7 @@ quartic(const double& error, const double& x4coef1, const double& x3coef1, const
 }
 
 const std::string
-diff(const std::string& equ)
+diff(const std::string & equ)
 {
     std::string equ_f = std::regex_replace(equ, std::regex(" "), "");
     equ_f = std::regex_replace(equ_f, std::regex("\\+x"), " 1x");
@@ -329,7 +386,7 @@ diff(const std::string& equ)
 }
 
 const std::string
-integr(const std::string& equ)
+integr(const std::string & equ)
 {
     std::string equ_f = std::regex_replace(equ, std::regex(" "), "");
     equ_f = std::regex_replace(equ_f, std::regex("\\+x"), " 1x");
@@ -386,7 +443,7 @@ integr(const std::string& equ)
 }
 
 const double
-factorial(const double& n)
+factorial(const double & n)
 {
     if (n <= 1) {
         return 1;
@@ -396,19 +453,19 @@ factorial(const double& n)
 }
 
 const double
-npr(const double& n, const double& r)
+npr(const double & n, const double & r)
 {
     return factorial(n) / factorial(n - r);
 }
 
 const double
-ncr(const double& n, const double& r)
+ncr(const double & n, const double & r)
 {
     return factorial(n) / (factorial(n - r) * factorial(r));
 }
 
 const double
-bin_dist(const double& X, const double& n, const double& p)
+bin_dist(const double & X, const double & n, const double & p)
 {
     return std::pow(p, X) * std::pow(1 - p, n - X) * ncr(n, X);
 }
