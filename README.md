@@ -4,7 +4,8 @@ This was originally meant to be a converter, and is now a full calculator + conv
 It is still very WIP. Feature completion checklist:
 
 - [x] Calculations
-- [ ] Conversions
+- [x] General conversions
+- [ ] Currency conversions
 - [ ] Graphs
 - [ ] Hotkeys
 - [ ] Mass calculation from files
