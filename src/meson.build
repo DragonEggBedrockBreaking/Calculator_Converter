@@ -1,4 +1,4 @@
-project('converter',
+project('calculator-converter',
   'c',
   'cpp',
   version: '0.1.0',
@@ -10,13 +10,14 @@ project('converter',
 )
 
 executable(
-  'converter',
+  'calculator-converter',
   sources: [
     'lib/imgui_impl_glfw.cpp',
     'lib/imgui_impl_opengl3.cpp',
     'lib/imgui_stdlib.cpp',
     'lib/nml.c',
     'lib/nml_util.c',
+    'conversion_functions.cpp',
     'main.cpp',
     'maths_functions.cpp'
   ],

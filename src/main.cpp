@@ -1,6 +1,8 @@
+#include <algorithm>
 #include <array>
 #include <iostream>
 #include <map>
+#include <vector>
 #include <fmt/core.h>
 #include "imgui.h"
 #include <GL/glxew.h>
@@ -9,6 +11,7 @@
 #include "lib/imgui_impl_opengl3.h"
 #include "lib/imgui_stdlib.h"
 #include "maths_functions.h"
+#include "conversion_functions.h"
 
 int main()
 {
@@ -65,8 +68,8 @@ int main()
            xcoef1_e4 = 0.0, ycoef1_e4 = 0.0, zcoef1_e4 = 0.0, acoef1_e4 = 0.0, num1_e4 = 0.0,
            xcoef2_e4 = 0.0, ycoef2_e4 = 0.0, zcoef2_e4 = 0.0, acoef2_e4 = 0.0, num2_e4 = 0.0,
            x4coef1 = 0.0, x4coef2 = 0.0, x3coef1 = 0.0, x3coef2 = 0.0, x2coef1 = 0.0, x2coef2 = 0.0,
-           xcoef1 = 0.0, xcoef2 = 0.0, num1 = 0.0, num2 = 0.0, error = 0.0;
-    std::string ans1 = "", ans2 = "", ans3 = "", ans4 = "";
+           xcoef1 = 0.0, xcoef2 = 0.0, num1 = 0.0, num2 = 0.0, error = 0.0, value = 0.0;
+    std::string ans1 = "", ans2 = "", ans3 = "", ans4 = "", text = "";
 
     // Main Loop
     while (!glfwWindowShouldClose(window)) {
@@ -595,6 +598,152 @@ int main()
         // Conversion dropdown
         if (conversion_main) {
             ImGui::Begin("Conversion dropdown", &conversion_main);
+            static int selected_conversion_opt;
+            ImGui::Combo("Mathematical Operations", &selected_conversion_opt, unit_types, IM_ARRAYSIZE(unit_types));
+
+            if (selected_conversion_opt == 3) {
+                static int convert_from;
+                static int convert_to;
+                ImGui::Combo("Convert from", &convert_from, temperature_units, IM_ARRAYSIZE(temperature_units));
+                ImGui::Combo("Convert to", &convert_to, temperature_units, IM_ARRAYSIZE(temperature_units));
+
+                if (convert_from != convert_to) {
+                    ImGui::InputDouble("Input value##foo1", &value);
+
+                    if (ImGui::Button("Convert")) {
+                        if (convert_from == 0 && convert_to == 1) {
+                            text = fmt::format("{}", celcius_fahrenheit(value));
+                        }
+                        else if (convert_from == 1 && convert_to == 0) {
+                            text = fmt::format("{}", fahrenheit_celcius(value));
+                        }
+                        else if (convert_from == 0 && convert_to == 2) {
+                            text = fmt::format("{}", celcius_kelvin(value));
+                        }
+                        else if (convert_from == 2 && convert_to == 0) {
+                            text = fmt::format("{}", kelvin_celcius(value));
+                        }
+                        else if (convert_from == 1 && convert_to == 2) {
+                            double celcius = fahrenheit_celcius(value);
+                            text = fmt::format("{}", celcius_kelvin(celcius));
+                        }
+                        else {
+                            double celcius = kelvin_celcius(value);
+                            text = fmt::format("{}", celcius_fahrenheit(celcius));
+                        }
+                    }
+
+                    ImGui::SameLine();
+                    ImGui::Text("%s", text.c_str());
+
+                }
+            }
+            else {
+                std::vector<std::string> dropdown;
+
+                switch (selected_conversion_opt) {
+                case 0:
+                    for (const char*& item : length_units) {
+                        dropdown.push_back(item);
+                    }
+
+                    break;
+
+                case 1:
+                    for (const char*& item : mass_units) {
+                        dropdown.push_back(item);
+                    }
+
+                    break;
+
+                case 2:
+                    for (const char*& item : time_units) {
+                        dropdown.push_back(item);
+                    }
+
+                    break;
+
+                case 4:
+                    for (const char*& item : velocity_units) {
+                        dropdown.push_back(item);
+                    }
+
+                    break;
+
+                case 5:
+                    for (const char*& item : acceleration_units) {
+                        dropdown.push_back(item);
+                    }
+
+                    break;
+
+                case 6:
+                    for (const char*& item : pressure_units) {
+                        dropdown.push_back(item);
+                    }
+
+                    break;
+
+                case 7:
+                    for (const char*& item : energy_units) {
+                        dropdown.push_back(item);
+                    }
+
+                    break;
+
+                case 8:
+                    for (const char*& item : area_units) {
+                        dropdown.push_back(item);
+                    }
+
+                    break;
+
+                case 9:
+                    for (const char*& item : velocity_units) {
+                        dropdown.push_back(item);
+                    }
+
+                    break;
+
+                case 10:
+                    for (const char*& item : density_units) {
+                        dropdown.push_back(item);
+                    }
+
+                    break;
+                }
+
+                const char* dropdown_arr[dropdown.size()];
+                std::transform(dropdown.begin(), dropdown.end(), dropdown_arr, [](std::string & element) {
+                    return element.c_str();
+                });
+
+                static int convert_from;
+                static int convert_to;
+                ImGui::Combo("Convert from", &convert_from, dropdown_arr, IM_ARRAYSIZE(dropdown_arr));
+                ImGui::Combo("Convert to", &convert_to, dropdown_arr, IM_ARRAYSIZE(dropdown_arr));
+
+                if (convert_from != convert_to) {
+                    ImGui::InputDouble("Input value##foo2", &value);
+
+                    if (ImGui::Button("Convert")) {
+                        if (convert_from == 0) {
+                            text = fmt::format("{}", convert_to_unit(value, dropdown_arr[convert_to]));
+                        }
+                        else if (convert_to == 0) {
+                            text = fmt::format("{}", convert_from_unit(value, dropdown_arr[convert_from]));
+                        }
+                        else {
+                            double si = convert_from_unit(value, dropdown_arr[convert_from]);
+                            text = fmt::format("{}", convert_to_unit(si, dropdown_arr[convert_to]));
+                        }
+                    }
+
+                    ImGui::SameLine();
+                    ImGui::Text("%s", text.c_str());
+                }
+            }
+
             ImGui::End();
         }
 

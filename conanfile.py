@@ -1,8 +1,8 @@
 from conans import ConanFile, Meson
 
 
-class ConverterConan(ConanFile):
-    name = "converter"
+class CalculatorConverterConan(ConanFile):
+    name = "calculator-converter"
     version = "0.1.0"
     settings = "os", "compiler", "build_type", "arch"
     generators = "pkg_config"
