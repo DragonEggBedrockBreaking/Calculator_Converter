@@ -18,8 +18,10 @@ executable(
     'lib/nml.c',
     'lib/nml_util.c',
     'conversion_functions.cpp',
+    'conversion_gui.cpp',
     'main.cpp',
-    'maths_functions.cpp'
+    'maths_functions.cpp',
+    'maths_gui.cpp'
   ],
   dependencies: [
     dependency('imgui'),
