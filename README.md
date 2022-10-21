@@ -5,10 +5,12 @@ It is still very WIP. Feature completion checklist:
 
 - [x] Calculations
 - [x] General conversions
-- [ ] Currency conversions
+- [x] Currency conversions
 - [ ] Graphs
 - [ ] Hotkeys
 - [ ] Mass calculation from files
+
+For currency conversion, `wget` and `unzip` are needed.
 
 ## Compilation
 
