@@ -15,6 +15,8 @@ executable(
     'lib/imgui_impl_glfw.cpp',
     'lib/imgui_impl_opengl3.cpp',
     'lib/imgui_stdlib.cpp',
+    'lib/implot.cpp',
+    'lib/implot_items.cpp',
     'lib/nml.c',
     'lib/nml_util.c',
     'conversion_functions.cpp',
