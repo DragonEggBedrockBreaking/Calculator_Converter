@@ -68,6 +68,7 @@ int main()
         "area",
         "volume",
         "density",
+        "currency"
     };
     double xcoef1_e1 = 0.0, ycoef1_e1 = 0.0, zcoef1_e1 = 0.0, acoef1_e1 = 0.0, num1_e1 = 0.0,
            xcoef2_e1 = 0.0, ycoef2_e1 = 0.0, zcoef2_e1 = 0.0, acoef2_e1 = 0.0, num2_e1 = 0.0,

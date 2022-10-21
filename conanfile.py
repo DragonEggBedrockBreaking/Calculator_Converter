@@ -12,7 +12,8 @@ class CalculatorConverterConan(ConanFile):
         "glew/2.2.0",
         "boost/1.80.0",
         "muparser/2.3.2",
-        "fmt/9.1.0"
+        "fmt/9.1.0",
+        "rapidcsv/8.64"
     ]
 
     def build(self):

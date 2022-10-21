@@ -87,3 +87,7 @@ dist/
 
 # Imgui
 imgui.ini
+
+# Currency stuff
+*.zip
+*.csv

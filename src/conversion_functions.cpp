@@ -1,3 +1,6 @@
+#include <ctime>
+#include <filesystem>
+#include "rapidcsv.h"
 #include "conversion_functions.h"
 
 static std::unordered_map <std::string, double> multiplier_map {
@@ -103,4 +106,48 @@ const double celcius_kelvin(const double& val)
 const double kelvin_celcius(const double& val)
 {
     return val + 273.15;
+}
+
+const double convert_currency(const double& val, const std::string& from, const std::string& to, const bool& ignore_date)
+{
+    if (!std::filesystem::exists("eurofxref.zip") && !std::filesystem::exists("eurofxref.csv")) {
+        system("wget -nv https://www.ecb.europa.eu/stats/eurofxref/eurofxref.zip");
+    }
+
+    if (!std::filesystem::exists("eurofxref.csv")) {
+        system("unzip eurofxref.zip");
+    }
+
+    std::remove("eurofxref.zip");
+
+    rapidcsv::Document doc("eurofxref.csv");
+
+    if (!ignore_date) {
+        std::vector<std::string> date_column = doc.GetColumn<std::string>("Date");
+        time_t rawtime;
+        struct tm *timeinfo;
+        char buffer[80];
+        time(&rawtime);
+        timeinfo = localtime(&rawtime);
+        strftime(buffer, 80, "%d %B %Y", timeinfo);
+
+        if (date_column[0] != buffer) {
+            std::remove("eurofxref.csv");
+            return convert_currency(val, from, to, true);
+        }
+    }
+
+    if (from == " EUR") {
+        std::vector<std::string> rate = doc.GetColumn<std::string>(to);
+        return val * std::stod(rate[0]);
+    }
+    else if (to == " EUR") {
+        std::vector<std::string> rate = doc.GetColumn<std::string>(from);
+        return val / std::stod(rate[0]);
+    }
+
+    std::vector<std::string> rate1 = doc.GetColumn<std::string>(from);
+    std::vector<std::string> rate2 = doc.GetColumn<std::string>(to);
+
+    return val / std::stod(rate1[0]) * std::stod(rate2[0]);
 }

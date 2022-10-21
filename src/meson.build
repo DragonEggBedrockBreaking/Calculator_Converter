@@ -29,7 +29,8 @@ executable(
     dependency('glew'),
     dependency('boost'),
     dependency('muparser'),
-    dependency('fmt')
+    dependency('fmt'),
+    dependency('rapidcsv')
   ],
   cpp_args: [
     '-Wno-deprecated-declarations'

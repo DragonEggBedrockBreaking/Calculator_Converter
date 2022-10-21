@@ -33,4 +33,3 @@ conan build ..
 ## Running
 
 The binary will be in `dist/` and will be called `converter`.
-(On Windows it is probably `converter.exe`, idrc...)

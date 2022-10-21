@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <unordered_map>
 #include <vector>
 #include <fmt/core.h>
 #include "imgui.h"
@@ -106,6 +107,75 @@ static const char* density_units[] {
     "pounds_per_cubic_inch",
     "pounds_per_gallon"
 };
+static const char* currencies[] {
+    "US dollar",
+    "Euro",
+    "Japanese yen",
+    "Bulgarian lev",
+    "Czech koruna",
+    "Danish krone",
+    "Pound sterling",
+    "Hungarian forint",
+    "Polish zloty",
+    "Romanian leu",
+    "Swedish krona",
+    "Swiss franc",
+    "Icelandic krona",
+    "Norwegian krone",
+    "Croatian kuna",
+    "Turkish lira",
+    "Australian dollar",
+    "Brazilian real",
+    "Canadian dollar",
+    "Chinese yuan renminbi",
+    "Hong Kong dollar",
+    "Indonesian rupiah",
+    "Israeli shekel",
+    "Indian rupee",
+    "South Korean won",
+    "Mexican peso",
+    "Malaysian ringgit",
+    "New Zealand dollar",
+    "Philippine peso",
+    "Singapore dollar",
+    "Thai baht"
+};
+
+static std::unordered_map<std::string, std::string> currency_map {
+    {"US dollar", " USD"},
+    {"Euro", " EUR"},
+    {"Japanese yen", " JPY"},
+    {"Bulgarian lev", " BGN"},
+    {"Czech koruna", " CZK"},
+    {"Danish krone", " DKK"},
+    {"Pound sterling", " GBP"},
+    {"Hungarian forint", " HUF"},
+    {"Polish zloty", " PLN"},
+    {"Romanian leu", " RON"},
+    {"Swedish krona", " SEK"},
+    {"Swiss franc", " CHF"},
+    {"Icelandic krona", " ISK"},
+    {"Norwegian krone", " NOK"},
+    {"Croatian kuna", " HRK"},
+    {"Turkish lira", " TRY"},
+    {"Australian dollar", " AUD"},
+    {"Brazilian real", " BRL"},
+    {"Canadian dollar", " CAD"},
+    {"Chinese yuan renminbi", " CNY"},
+    {"Hong Kong dollar", " HKD"},
+    {"Indonesian rupiah", " IDR"},
+    {"Israeli shekel", " ILS"},
+    {"Indian rupee", " INR"},
+    {"South Korean won", " KRW"},
+    {"Mexican peso", " MXN"},
+    {"Malaysian ringgit", " MYR"},
+    {"New Zealand dollar", " NZD"},
+    {"Philippine peso", " PHP"},
+    {"Singapore dollar", " SGD"},
+    {"Thai baht", " THB"},
+    {"South African rand", " ZAR"}
+};
+
 
 void temperature_gui(double& value, std::string& text)
 {
@@ -252,10 +322,34 @@ void general_gui(const int& selected_conversion_opt, double& value, std::string&
     }
 }
 
+void currency_gui(double& value, std::string& text)
+{
+    static int convert_from;
+    static int convert_to;
+    ImGui::Combo("Convert from", &convert_from, currencies, IM_ARRAYSIZE(currencies));
+    ImGui::Combo("Convert to", &convert_to, currencies, IM_ARRAYSIZE(currencies));
+    const std::string currency_from = currency_map[currencies[convert_from]];
+    const std::string currency_to = currency_map[currencies[convert_to]];
+
+    if (convert_from != convert_to) {
+        ImGui::InputDouble("Input value##foo3", &value);
+
+        if (ImGui::Button("Convert")) {
+            text = fmt::format("{}", convert_currency(value, currency_from, currency_to, false));
+        }
+
+        ImGui::SameLine();
+        ImGui::Text("%s", (text + currency_to).c_str());
+    }
+}
+
 void run_conversion_gui(const int& selected_conversion_int, double& value, std::string& text)
 {
     if (selected_conversion_int == 3) {
         temperature_gui(value, text);
+    }
+    else if (selected_conversion_int == 11) {
+        currency_gui(value, text);
     }
     else {
         general_gui(selected_conversion_int, value, text);
