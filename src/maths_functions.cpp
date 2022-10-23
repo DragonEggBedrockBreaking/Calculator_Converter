@@ -2,7 +2,6 @@
 #include <boost/algorithm/string.hpp>
 #include "muParser.h"
 #include "lib/nml.h"
-#include <cmath>
 #include <regex>
 
 const double

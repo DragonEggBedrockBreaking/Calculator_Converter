@@ -1,7 +1,5 @@
 #pragma once
 
-#include <cmath>
-#include <unordered_map>
 #include <string>
 
 const double convert_from_unit(const double& val, const std::string& unit);

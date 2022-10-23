@@ -3,15 +3,7 @@
 #include "lib/imgui_stdlib.h"
 #include "maths_functions.h"
 #include "guis.h"
-
-void input_double(const char* id, double* var, const char* decimals, const bool& same_line)
-{
-    if (same_line) {
-        ImGui::SameLine();
-    }
-
-    ImGui::InputDouble(id, var, 0.0, 0.0, decimals);
-}
+#include "utils.h"
 
 void linear(double& xcoef1_e1, double& ycoef1_e1, double& zcoef1_e1, double& acoef1_e1, double& num1_e1,
             double& xcoef2_e1, double& ycoef2_e1, double& zcoef2_e1, double& acoef2_e1, double& num2_e1,
@@ -70,7 +62,7 @@ void linear(double& xcoef1_e1, double& ycoef1_e1, double& zcoef1_e1, double& aco
 
     if (unknowns == 3) {
         ImGui::PushItemWidth(55);
-        input_double("x +##foo1", &xcoef1_e1, "%.5f", true);
+        input_double("x +##foo1", &xcoef1_e1, "%.5f", false);
         input_double("y +##foo2", &ycoef1_e1, "%.5f", true);
         input_double("z +##foo3", &zcoef1_e1, "%.5f", true);
         input_double("=##foo4", &num1_e1, "%.5f", true);
@@ -264,7 +256,7 @@ void run_maths_gui(const int& selected_maths_opt,
                    double& xcoef2_e4, double& ycoef2_e4, double& zcoef2_e4, double& acoef2_e4, double& num2_e4,
                    double& x4coef1, double& x4coef2, double& x3coef1, double& x3coef2, double& x2coef1, double& x2coef2,
                    double& xcoef1, double& xcoef2, double& num1, double& num2, double& error, double& value,
-                   double& first, double& second, double& third, 
+                   double& first, double& second, double& third,
                    std::string& ans1, std::string& ans2, std::string& ans3, std::string& ans4)
 {
     switch (selected_maths_opt) {

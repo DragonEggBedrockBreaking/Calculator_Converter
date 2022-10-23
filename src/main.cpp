@@ -1,12 +1,9 @@
 #include <iostream>
-#include <fmt/core.h>
-#include "imgui.h"
 #include <GL/glxew.h>
 #include <GLFW/glfw3.h>
 #include "lib/imgui_impl_glfw.h"
 #include "lib/imgui_impl_opengl3.h"
 #include "lib/imgui_stdlib.h"
-#include "conversion_functions.h"
 #include "guis.h"
 
 int main()
@@ -46,13 +43,14 @@ int main()
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
     ImGui::StyleColorsDark();
+    ImPlot::CreateContext();
 
     // Define the window open bools
     static bool main_dropdown = true;
     static bool maths_main = false;
     static bool graphs = false;
     static bool conversion_main = false;
-    static const char* items[] {"None", "Mathematical Calculations", "Unit Conversions"};
+    static const char* items[] {"None", "Mathematical Calculations", "Graphs", "Unit Conversions"};
 
     // Define some vars
     std::string text = "";
@@ -81,8 +79,14 @@ int main()
            x4coef1 = 0.0, x4coef2 = 0.0, x3coef1 = 0.0, x3coef2 = 0.0, x2coef1 = 0.0, x2coef2 = 0.0,
            xcoef1 = 0.0, xcoef2 = 0.0, num1 = 0.0, num2 = 0.0, error = 0.0, value = 0.0,
            first = 0.0, second = 0.0, third = 0.0;
-    std::string ans1 = "", ans2 = "", ans3 = "", ans4 = "";
 
+    std::string ans1 = "", ans2 = "", ans3 = "", ans4 = "",
+                expression1 = "", expression2 = "", expression3 = "", expression4 = "";
+
+    bool plot1 = false, plot2 = false, plot3 = false, plot4 = false;
+
+    ImVec4 colour1 = ImVec4(1, 0.75f, 0, 1), colour2 = ImVec4(0, 1, 0, 1),
+           colour3 = ImVec4(1, 0, 1, 0), colour4 = ImVec4(0, 1, 1, 0);
 
     // Main Loop
     while (!glfwWindowShouldClose(window)) {
@@ -109,11 +113,19 @@ int main()
 
             case 1:
                 maths_main = true;
+                graphs = false;
                 conversion_main = false;
                 break;
 
             case 2:
                 maths_main = false;
+                graphs = true;
+                conversion_main = false;
+                break;
+
+            case 3:
+                maths_main = false;
+                graphs = false;
                 conversion_main = true;
                 break;
             }
@@ -127,10 +139,6 @@ int main()
             static int selected_maths_opt;
             static const char* maths_options[] {"Basic Operations", "Linear Equations", "Non Linear Equations", "Calculus", "Probability"};
             ImGui::Combo("Mathematical Operations", &selected_maths_opt, maths_options, IM_ARRAYSIZE(maths_options));
-
-            if (selected_maths_opt == 1 || selected_maths_opt == 2) {
-                ImGui::Checkbox("Graph", &graphs);
-            }
 
             run_maths_gui(selected_maths_opt, xcoef1_e1, ycoef1_e1, zcoef1_e1, acoef1_e1, num1_e1,
                           xcoef2_e1, ycoef2_e1, zcoef2_e1, acoef2_e1, num2_e1,
@@ -148,8 +156,14 @@ int main()
         }
 
         // Graphs
-        if (maths_main && graphs) {
+        if (graphs) {
             ImGui::Begin("Graphs", &graphs);
+
+            Graph graph;
+            graph.run_graph_gui(expression1, plot1, expression2, plot2,
+                                expression3, plot3, expression4, plot4,
+                                colour1, colour2, colour3, colour4);
+
             ImGui::End();
         }
 
@@ -175,6 +189,7 @@ int main()
     }
 
     // Cleanup
+    ImPlot::DestroyContext();
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
