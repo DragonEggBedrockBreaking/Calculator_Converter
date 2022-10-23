@@ -6,7 +6,7 @@ It is still very WIP. Feature completion checklist:
 - [x] Calculations
 - [x] General conversions
 - [x] Currency conversions
-- [ ] Graphs
+- [x] Graphs
 - [ ] Hotkeys
 - [ ] Mass calculation from files
 
