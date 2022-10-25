@@ -7,8 +7,9 @@ It is still very WIP. Feature completion checklist:
 - [x] General conversions
 - [x] Currency conversions
 - [x] Graphs
-- [ ] Hotkeys
 - [x] Mass calculation from files
+- [x] "Reset All" Button
+- [ ] "Reset All" Hotkey
 
 For currency conversion, `wget` and `unzip` are needed.
 

@@ -46,15 +46,9 @@ int main()
     ImPlot::CreateContext();
 
     // Define the window open bools
-    static bool main_dropdown = true;
-    static bool maths_main = false;
-    static bool graphs = false;
-    static bool conversion_main = false;
-    static bool scripting = false;
     static const char* items[] {"None", "Mathematical Calculations", "Graphs", "Unit Conversions", "Scripting"};
 
     // Define some vars
-    std::string text = "";
     static const char* unit_types[] {
         "length",
         "mass",
@@ -81,10 +75,11 @@ int main()
            xcoef1 = 0.0, xcoef2 = 0.0, num1 = 0.0, num2 = 0.0, error = 0.0, value = 0.0,
            first = 0.0, second = 0.0, third = 0.0;
 
-    std::string expression1 = "", expression2 = "", expression3 = "", expression4 = "",
+    std::string expression1 = "", expression2 = "", expression3 = "", expression4 = "", text = "",
                 ans1 = "", ans2 = "", ans3 = "", ans4 = "", inpath = "", outpath = "", message = "";
 
-    bool plot1 = false, plot2 = false, plot3 = false, plot4 = false, processing = false;
+    bool main_dropdown = true, maths_main = false, graphs = false, conversion_main = false, scripting = false,
+         plot1 = false, plot2 = false, plot3 = false, plot4 = false, processing = false;
 
     ImVec4 colour1 = ImVec4(1, 0.75f, 0, 1), colour2 = ImVec4(0, 1, 0, 1),
            colour3 = ImVec4(1, 0, 1, 0), colour4 = ImVec4(0, 1, 1, 0);
@@ -140,6 +135,31 @@ int main()
                 graphs = false;
                 conversion_main = false;
                 scripting = true;
+                break;
+            }
+
+            if (ImGui::Button("Reset All")) {
+                xcoef1_e1 = 0.0, ycoef1_e1 = 0.0, zcoef1_e1 = 0.0, acoef1_e1 = 0.0, num1_e1 = 0.0,
+                xcoef2_e1 = 0.0, ycoef2_e1 = 0.0, zcoef2_e1 = 0.0, acoef2_e1 = 0.0, num2_e1 = 0.0,
+                xcoef1_e2 = 0.0, ycoef1_e2 = 0.0, zcoef1_e2 = 0.0, acoef1_e2 = 0.0, num1_e2 = 0.0,
+                xcoef2_e2 = 0.0, ycoef2_e2 = 0.0, zcoef2_e2 = 0.0, acoef2_e2 = 0.0, num2_e2 = 0.0,
+                xcoef1_e3 = 0.0, ycoef1_e3 = 0.0, zcoef1_e3 = 0.0, acoef1_e3 = 0.0, num1_e3 = 0.0,
+                xcoef2_e3 = 0.0, ycoef2_e3 = 0.0, zcoef2_e3 = 0.0, acoef2_e3 = 0.0, num2_e3 = 0.0,
+                xcoef1_e4 = 0.0, ycoef1_e4 = 0.0, zcoef1_e4 = 0.0, acoef1_e4 = 0.0, num1_e4 = 0.0,
+                xcoef2_e4 = 0.0, ycoef2_e4 = 0.0, zcoef2_e4 = 0.0, acoef2_e4 = 0.0, num2_e4 = 0.0,
+                x4coef1 = 0.0, x4coef2 = 0.0, x3coef1 = 0.0, x3coef2 = 0.0, x2coef1 = 0.0, x2coef2 = 0.0,
+                xcoef1 = 0.0, xcoef2 = 0.0, num1 = 0.0, num2 = 0.0, error = 0.0, value = 0.0,
+                first = 0.0, second = 0.0, third = 0.0;
+
+                expression1 = "", expression2 = "", expression3 = "", expression4 = "", text = "",
+                ans1 = "", ans2 = "", ans3 = "", ans4 = "", inpath = "", outpath = "", message = "";
+
+                main_dropdown = true, maths_main = false, graphs = false, conversion_main = false, scripting = false,
+                plot1 = false, plot2 = false, plot3 = false, plot4 = false, processing = false;
+
+                colour1 = ImVec4(1, 0.75f, 0, 1), colour2 = ImVec4(0, 1, 0, 1),
+                colour3 = ImVec4(1, 0, 1, 0), colour4 = ImVec4(0, 1, 1, 0);
+
             }
 
             ImGui::End();
