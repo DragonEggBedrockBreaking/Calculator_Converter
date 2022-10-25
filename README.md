@@ -8,7 +8,7 @@ It is still very WIP. Feature completion checklist:
 - [x] Currency conversions
 - [x] Graphs
 - [ ] Hotkeys
-- [ ] Mass calculation from files
+- [x] Mass calculation from files
 
 For currency conversion, `wget` and `unzip` are needed.
 
