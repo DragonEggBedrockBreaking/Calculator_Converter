@@ -5,7 +5,7 @@
 #include "muParser.h"
 
 template <typename T>
-static inline T remap(T x, T x0, T x1, T y0, T y1)
+inline T remap(T x, T x0, T x1, T y0, T y1)
 {
     return y0 + (x - x0) * (y1 - y0) / (x1 - x0);
 }
@@ -16,7 +16,7 @@ double Graph::get_y(double& x, const std::string& str)
         const std::string expr = std::regex_replace(str, std::regex(" "), "");
         mu::Parser p;
         p.DefineVar("x", &x);
-        p.SetExpr(expr);
+        p.SetExpr(str);
         return p.Eval();
     }
     catch (mu::Parser::exception_type &e) {

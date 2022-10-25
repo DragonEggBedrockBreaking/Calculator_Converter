@@ -1,8 +1,8 @@
+#include <regex>
 #include "maths_functions.h"
 #include <boost/algorithm/string.hpp>
 #include "muParser.h"
 #include "lib/nml.h"
-#include <regex>
 
 const double
 basic(const std::string& expression)
@@ -10,7 +10,7 @@ basic(const std::string& expression)
     try {
         const std::string expr = std::regex_replace(expression, std::regex(" "), "");
         mu::Parser p;
-        p.SetExpr(expr);
+        p.SetExpr(expression);
         return p.Eval();
     }
     catch (mu::Parser::exception_type &e) {
@@ -19,7 +19,7 @@ basic(const std::string& expression)
 }
 
 const double
-linear(const double& xcoef1, const double& num1, const double& xcoef2, const double& num2)
+linear1(const double& xcoef1, const double& num1, const double& xcoef2, const double& num2)
 {
     const double left = xcoef1 - xcoef2;
     const double right = num2 - num1;
@@ -27,12 +27,12 @@ linear(const double& xcoef1, const double& num1, const double& xcoef2, const dou
 }
 
 const std::tuple<double, double>
-linear(const double& xcoef1_e1, const double& ycoef1_e1, const double& num1_e1,
-       const double& xcoef2_e1, const double& ycoef2_e1, const double& num2_e1,
-       const double& xcoef1_e2, const double& ycoef1_e2, const double& num1_e2,
-       const double& xcoef2_e2, const double& ycoef2_e2, const double& num2_e2)
+linear2(const double& xcoef1_e1, const double& ycoef1_e1, const double& num1_e1,
+        const double& xcoef2_e1, const double& ycoef2_e1, const double& num2_e1,
+        const double& xcoef1_e2, const double& ycoef1_e2, const double& num1_e2,
+        const double& xcoef2_e2, const double& ycoef2_e2, const double& num2_e2)
 {
-    std::tuple<double, double> return_value;
+    std::tuple<double, double> return_value = std::tuple {NAN, NAN};
 
     const double xcoef_e1 = xcoef1_e1 - xcoef2_e1;
     const double ycoef_e1 = ycoef1_e1 - ycoef2_e1;
@@ -50,10 +50,7 @@ linear(const double& xcoef1_e1, const double& ycoef1_e1, const double& num1_e1,
     nml_mat *sm_mat = nml_mat_from(2, 2, 4, small_matrix);
     nml_mat_lup *mat_lup = nml_mat_lup_solve(sm_mat);
 
-    if (nml_mat_det(mat_lup) == 0) {
-        return_value = std::tuple {NAN, NAN};
-    }
-    else {
+    if (nml_mat_det(mat_lup) != 0) {
         double matrix[6] {
             xcoef_e1, ycoef_e1, num_e1,
             xcoef_e2, ycoef_e2, num_e2
@@ -62,7 +59,9 @@ linear(const double& xcoef1_e1, const double& ycoef1_e1, const double& num1_e1,
         nml_mat *mat = nml_mat_from(2, 3, 6, matrix);
         nml_mat *rrefm = nml_mat_rref(mat);
 
-        return_value = {rrefm->data[0][2], rrefm->data[1][2]};
+        if (rrefm->data[0][0] == 1 && rrefm->data[1][1] == 1) {
+            return_value = {rrefm->data[0][2], rrefm->data[1][2]};
+        }
 
         nml_mat_free(mat);
         nml_mat_free(rrefm);
@@ -75,14 +74,14 @@ linear(const double& xcoef1_e1, const double& ycoef1_e1, const double& num1_e1,
 }
 
 const std::tuple<double, double, double>
-linear(const double& xcoef1_e1, const double& ycoef1_e1, const double& zcoef1_e1, const double& num1_e1,
-       const double& xcoef2_e1, const double& ycoef2_e1, const double& zcoef2_e1, const double& num2_e1,
-       const double& xcoef1_e2, const double& ycoef1_e2, const double& zcoef1_e2, const double& num1_e2,
-       const double& xcoef2_e2, const double& ycoef2_e2, const double& zcoef2_e2, const double& num2_e2,
-       const double& xcoef1_e3, const double& ycoef1_e3, const double& zcoef1_e3, const double& num1_e3,
-       const double& xcoef2_e3, const double& ycoef2_e3, const double& zcoef2_e3, const double& num2_e3)
+linear3(const double& xcoef1_e1, const double& ycoef1_e1, const double& zcoef1_e1, const double& num1_e1,
+        const double& xcoef2_e1, const double& ycoef2_e1, const double& zcoef2_e1, const double& num2_e1,
+        const double& xcoef1_e2, const double& ycoef1_e2, const double& zcoef1_e2, const double& num1_e2,
+        const double& xcoef2_e2, const double& ycoef2_e2, const double& zcoef2_e2, const double& num2_e2,
+        const double& xcoef1_e3, const double& ycoef1_e3, const double& zcoef1_e3, const double& num1_e3,
+        const double& xcoef2_e3, const double& ycoef2_e3, const double& zcoef2_e3, const double& num2_e3)
 {
-    std::tuple<double, double, double> return_value;
+    std::tuple<double, double, double> return_value = std::tuple {NAN, NAN, NAN};
 
     const double xcoef_e1 = xcoef1_e1 - xcoef2_e1;
     const double ycoef_e1 = ycoef1_e1 - ycoef2_e1;
@@ -108,10 +107,7 @@ linear(const double& xcoef1_e1, const double& ycoef1_e1, const double& zcoef1_e1
     nml_mat *sm_mat = nml_mat_from(2, 2, 4, small_matrix);
     nml_mat_lup *mat_lup = nml_mat_lup_solve(sm_mat);
 
-    if (nml_mat_det(mat_lup) == 0) {
-        return_value = std::tuple {NAN, NAN, NAN};
-    }
-    else {
+    if (nml_mat_det(mat_lup) != 0) {
         double matrix[12] {
             xcoef_e1, ycoef_e1, zcoef_e1, num_e1,
             xcoef_e2, ycoef_e2, zcoef_e2, num_e2,
@@ -121,7 +117,9 @@ linear(const double& xcoef1_e1, const double& ycoef1_e1, const double& zcoef1_e1
         nml_mat *mat = nml_mat_from(3, 4, 12, matrix);
         nml_mat *rrefm = nml_mat_rref(mat);
 
-        return_value = {rrefm->data[0][3], rrefm->data[1][3], rrefm->data[2][3]};
+        if (rrefm->data[0][0] == 1 && rrefm->data[1][1] == 1 && rrefm->data[2][2] == 1) {
+            return_value = {rrefm->data[0][3], rrefm->data[1][3], rrefm->data[2][3]};
+        }
 
         nml_mat_free(mat);
         nml_mat_free(rrefm);
@@ -134,16 +132,16 @@ linear(const double& xcoef1_e1, const double& ycoef1_e1, const double& zcoef1_e1
 }
 
 const std::tuple<double, double, double, double>
-linear(const double & xcoef1_e1, const double & ycoef1_e1, const double & zcoef1_e1, const double & acoef1_e1, const double & num1_e1,
-       const double & xcoef2_e1, const double & ycoef2_e1, const double & zcoef2_e1, const double & acoef2_e1, const double & num2_e1,
-       const double & xcoef1_e2, const double & ycoef1_e2, const double & zcoef1_e2, const double & acoef1_e2, const double & num1_e2,
-       const double & xcoef2_e2, const double & ycoef2_e2, const double & zcoef2_e2, const double & acoef2_e2, const double & num2_e2,
-       const double & xcoef1_e3, const double & ycoef1_e3, const double & zcoef1_e3, const double & acoef1_e3, const double & num1_e3,
-       const double & xcoef2_e3, const double & ycoef2_e3, const double & zcoef2_e3, const double & acoef2_e3, const double & num2_e3,
-       const double & xcoef1_e4, const double & ycoef1_e4, const double & zcoef1_e4, const double & acoef1_e4, const double & num1_e4,
-       const double & xcoef2_e4, const double & ycoef2_e4, const double & zcoef2_e4, const double & acoef2_e4, const double & num2_e4)
+linear4(const double & xcoef1_e1, const double & ycoef1_e1, const double & zcoef1_e1, const double & acoef1_e1, const double & num1_e1,
+        const double & xcoef2_e1, const double & ycoef2_e1, const double & zcoef2_e1, const double & acoef2_e1, const double & num2_e1,
+        const double & xcoef1_e2, const double & ycoef1_e2, const double & zcoef1_e2, const double & acoef1_e2, const double & num1_e2,
+        const double & xcoef2_e2, const double & ycoef2_e2, const double & zcoef2_e2, const double & acoef2_e2, const double & num2_e2,
+        const double & xcoef1_e3, const double & ycoef1_e3, const double & zcoef1_e3, const double & acoef1_e3, const double & num1_e3,
+        const double & xcoef2_e3, const double & ycoef2_e3, const double & zcoef2_e3, const double & acoef2_e3, const double & num2_e3,
+        const double & xcoef1_e4, const double & ycoef1_e4, const double & zcoef1_e4, const double & acoef1_e4, const double & num1_e4,
+        const double & xcoef2_e4, const double & ycoef2_e4, const double & zcoef2_e4, const double & acoef2_e4, const double & num2_e4)
 {
-    std::tuple<double, double, double, double> return_value;
+    std::tuple<double, double, double, double> return_value = std::tuple {NAN, NAN, NAN, NAN};
 
     const double xcoef_e1 = xcoef1_e1 - xcoef2_e1;
     const double ycoef_e1 = ycoef1_e1 - ycoef2_e1;
@@ -179,10 +177,7 @@ linear(const double & xcoef1_e1, const double & ycoef1_e1, const double & zcoef1
     nml_mat *sm_mat = nml_mat_from(2, 2, 4, small_matrix);
     nml_mat_lup *mat_lup = nml_mat_lup_solve(sm_mat);
 
-    if (nml_mat_det(mat_lup) == 0) {
-        return_value = std::tuple {NAN, NAN, NAN, NAN};
-    }
-    else {
+    if (nml_mat_det(mat_lup) != 0) {
         double matrix[20] {
             xcoef_e1, ycoef_e1, zcoef_e1, acoef_e1, num_e1,
             xcoef_e2, ycoef_e2, zcoef_e2, acoef_e2, num_e2,
@@ -193,7 +188,9 @@ linear(const double & xcoef1_e1, const double & ycoef1_e1, const double & zcoef1
         nml_mat *mat = nml_mat_from(4, 5, 12, matrix);
         nml_mat *rrefm = nml_mat_rref(mat);
 
-        return_value = {rrefm->data[0][4], rrefm->data[1][4], rrefm->data[2][4], rrefm->data[3][4]};
+        if (rrefm->data[0][0] == 1 && rrefm->data[1][1] == 1 && rrefm->data[2][2] == 1 && rrefm->data[3][3]) {
+            return_value = {rrefm->data[0][4], rrefm->data[1][4], rrefm->data[2][4], rrefm->data[3][4]};
+        }
 
         nml_mat_free(mat);
         nml_mat_free(rrefm);

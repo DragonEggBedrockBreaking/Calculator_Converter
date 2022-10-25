@@ -30,3 +30,5 @@ struct Graph {
 };
 
 void run_conversion_gui(const int& selected_conversion_int, double& value, std::string& text);
+
+void run_scripting_gui(std::string& inpath, std::string& outpath, std::string& message, bool& processing);

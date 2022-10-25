@@ -50,7 +50,8 @@ int main()
     static bool maths_main = false;
     static bool graphs = false;
     static bool conversion_main = false;
-    static const char* items[] {"None", "Mathematical Calculations", "Graphs", "Unit Conversions"};
+    static bool scripting = false;
+    static const char* items[] {"None", "Mathematical Calculations", "Graphs", "Unit Conversions", "Scripting"};
 
     // Define some vars
     std::string text = "";
@@ -80,10 +81,10 @@ int main()
            xcoef1 = 0.0, xcoef2 = 0.0, num1 = 0.0, num2 = 0.0, error = 0.0, value = 0.0,
            first = 0.0, second = 0.0, third = 0.0;
 
-    std::string ans1 = "", ans2 = "", ans3 = "", ans4 = "",
-                expression1 = "", expression2 = "", expression3 = "", expression4 = "";
+    std::string expression1 = "", expression2 = "", expression3 = "", expression4 = "",
+                ans1 = "", ans2 = "", ans3 = "", ans4 = "", inpath = "", outpath = "", message = "";
 
-    bool plot1 = false, plot2 = false, plot3 = false, plot4 = false;
+    bool plot1 = false, plot2 = false, plot3 = false, plot4 = false, processing = false;
 
     ImVec4 colour1 = ImVec4(1, 0.75f, 0, 1), colour2 = ImVec4(0, 1, 0, 1),
            colour3 = ImVec4(1, 0, 1, 0), colour4 = ImVec4(0, 1, 1, 0);
@@ -108,26 +109,37 @@ int main()
             switch (selected_item) {
             case 0:
                 maths_main = false;
+                graphs = false;
                 conversion_main = false;
+                scripting = false;
                 break;
 
             case 1:
                 maths_main = true;
                 graphs = false;
                 conversion_main = false;
+                scripting = false;
                 break;
 
             case 2:
                 maths_main = false;
                 graphs = true;
                 conversion_main = false;
+                scripting = false;
                 break;
 
             case 3:
                 maths_main = false;
                 graphs = false;
                 conversion_main = true;
+                scripting = false;
                 break;
+
+            case 4:
+                maths_main = false;
+                graphs = false;
+                conversion_main = false;
+                scripting = true;
             }
 
             ImGui::End();
@@ -174,6 +186,15 @@ int main()
             ImGui::Combo("Mathematical Operations", &selected_conversion_opt, unit_types, IM_ARRAYSIZE(unit_types));
 
             run_conversion_gui(selected_conversion_opt, value, text);
+
+            ImGui::End();
+        }
+
+        // Scripting
+        if (scripting) {
+            ImGui::Begin("Scripting", &scripting);
+
+            run_scripting_gui(inpath, outpath, message, processing);
 
             ImGui::End();
         }

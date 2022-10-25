@@ -91,3 +91,7 @@ imgui.ini
 # Currency stuff
 *.zip
 *.csv
+
+# Scripting stuff
+*.toml
+*.json

@@ -25,6 +25,8 @@ executable(
     'main.cpp',
     'maths_functions.cpp',
     'maths_gui.cpp',
+    'scripting.cpp',
+    'scripting_gui.cpp',
     'utils.cpp'
   ],
   dependencies: [
@@ -34,7 +36,9 @@ executable(
     dependency('boost'),
     dependency('muparser'),
     dependency('fmt'),
-    dependency('rapidcsv')
+    dependency('rapidcsv'),
+    dependency('toml11'),
+    dependency('portable-file-dialogs')
   ],
   cpp_args: [
     '-Wno-deprecated-declarations'

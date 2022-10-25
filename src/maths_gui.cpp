@@ -27,7 +27,7 @@ void linear(double& xcoef1_e1, double& ycoef1_e1, double& zcoef1_e1, double& aco
         input_double("##foo4", &num2_e1, "%.8f", true);
 
         if (ImGui::Button("Solve")) {
-            ans1 = std::to_string(linear(xcoef1_e1, num1_e1, xcoef2_e1, num2_e1));
+            ans1 = std::to_string(linear1(xcoef1_e1, num1_e1, xcoef2_e1, num2_e1));
         }
 
         ImGui::SameLine();
@@ -51,8 +51,8 @@ void linear(double& xcoef1_e1, double& ycoef1_e1, double& zcoef1_e1, double& aco
         input_double("##foo12", &num2_e2, "%.5f", true);
 
         if (ImGui::Button("Solve")) {
-            auto [answer1, answer2] = linear(xcoef1_e1, ycoef1_e1, num1_e1, xcoef2_e1, ycoef2_e1, num2_e1,
-                                             xcoef1_e2, ycoef1_e2, num1_e2, xcoef2_e2, ycoef2_e2, num2_e2);
+            auto [answer1, answer2] = linear2(xcoef1_e1, ycoef1_e1, num1_e1, xcoef2_e1, ycoef2_e1, num2_e1,
+                                              xcoef1_e2, ycoef1_e2, num1_e2, xcoef2_e2, ycoef2_e2, num2_e2);
             ans1 = std::to_string(answer1), ans2 = std::to_string(answer2);
         }
 
@@ -90,7 +90,7 @@ void linear(double& xcoef1_e1, double& ycoef1_e1, double& zcoef1_e1, double& aco
         input_double("##foo24", &num2_e3, "%.5f", true);
 
         if (ImGui::Button("Solve")) {
-            auto [answer1, answer2, answer3] = linear(xcoef1_e1, ycoef1_e1, zcoef1_e1, num1_e1,
+            auto [answer1, answer2, answer3] = linear3(xcoef1_e1, ycoef1_e1, zcoef1_e1, num1_e1,
                                                xcoef2_e1, ycoef2_e1, zcoef2_e1, num2_e1,
                                                xcoef1_e2, ycoef1_e2, zcoef1_e2, num1_e2,
                                                xcoef2_e2, ycoef2_e2, zcoef2_e2, num2_e2,
@@ -150,7 +150,7 @@ void linear(double& xcoef1_e1, double& ycoef1_e1, double& zcoef1_e1, double& aco
         input_double("##foo40", &num2_e4, "%.5f", true);
 
         if (ImGui::Button("Solve")) {
-            auto [answer1, answer2, answer3, answer4] = linear(xcoef1_e1, ycoef1_e1, zcoef1_e1, acoef1_e1, num1_e1,
+            auto [answer1, answer2, answer3, answer4] = linear4(xcoef1_e1, ycoef1_e1, zcoef1_e1, acoef1_e1, num1_e1,
                     xcoef2_e1, ycoef2_e1, zcoef2_e1, acoef2_e1, num2_e1,
                     xcoef1_e2, ycoef1_e2, zcoef1_e2, acoef1_e2, num1_e2,
                     xcoef2_e2, ycoef2_e2, zcoef2_e2, acoef2_e2, num2_e2,
