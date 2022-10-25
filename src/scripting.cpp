@@ -4,11 +4,13 @@
 #include <regex>
 #include <tuple>
 #include <vector>
+
 #include <boost/algorithm/string.hpp>
 #include <fmt/core.h>
+#include <toml.hpp>
+
 #include "maths_functions.h"
 #include "scripting.h"
-#include <toml.hpp>
 
 void modify_string(std::string& val)
 {

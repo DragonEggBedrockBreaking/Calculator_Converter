@@ -1,8 +1,10 @@
 #include <regex>
-#include "maths_functions.h"
+
 #include <boost/algorithm/string.hpp>
-#include "muParser.h"
 #include "lib/nml.h"
+#include <muParser.h>
+
+#include "maths_functions.h"
 
 const double
 basic(const std::string& expression)

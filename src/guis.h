@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+
 #include "lib/implot.h"
 
 void run_maths_gui(const int& selected_maths_opt,

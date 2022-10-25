@@ -1,6 +1,7 @@
+#include <imgui.h>
+#include <portable-file-dialogs.h>
+
 #include "guis.h"
-#include "imgui.h"
-#include "portable-file-dialogs.h"
 #include "scripting.h"
 
 void run_scripting_gui(std::string& inpath, std::string& outpath, std::string& message, bool& processing)

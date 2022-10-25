@@ -1,5 +1,7 @@
 #include <filesystem>
+
 #include "rapidcsv.h"
+
 #include "conversion_functions.h"
 
 static std::unordered_map <std::string, double> multiplier_map {

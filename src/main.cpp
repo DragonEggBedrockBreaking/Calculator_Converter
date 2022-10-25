@@ -1,9 +1,11 @@
 #include <iostream>
+
 #include <GL/glxew.h>
 #include <GLFW/glfw3.h>
 #include "lib/imgui_impl_glfw.h"
 #include "lib/imgui_impl_opengl3.h"
 #include "lib/imgui_stdlib.h"
+
 #include "guis.h"
 
 int main()

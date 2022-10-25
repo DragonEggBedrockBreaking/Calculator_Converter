@@ -1,6 +1,8 @@
 #include <regex>
-#include "imgui.h"
+
+#include <imgui.h>
 #include "lib/imgui_stdlib.h"
+
 #include "guis.h"
 #include "muParser.h"
 
