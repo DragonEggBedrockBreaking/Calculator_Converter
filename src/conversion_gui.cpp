@@ -321,7 +321,7 @@ void general_gui(const int& selected_conversion_opt, double& value, std::string&
     }
 }
 
-void currency_gui(double& value, std::string& text)
+void currency_gui(double& value, std::string& text, bool& currency_handled)
 {
     static int convert_from;
     static int convert_to;
@@ -334,7 +334,7 @@ void currency_gui(double& value, std::string& text)
         ImGui::InputDouble("Input value##foo3", &value);
 
         if (ImGui::Button("Convert")) {
-            text = fmt::format("{}", convert_currency(value, currency_from, currency_to, false));
+            text = fmt::format("{}", convert_currency(value, currency_from, currency_to, currency_handled));
         }
 
         ImGui::SameLine();
@@ -342,13 +342,13 @@ void currency_gui(double& value, std::string& text)
     }
 }
 
-void run_conversion_gui(const int& selected_conversion_int, double& value, std::string& text)
+void run_conversion_gui(const int& selected_conversion_int, double& value, std::string& text, bool& currency_handled)
 {
     if (selected_conversion_int == 3) {
         temperature_gui(value, text);
     }
     else if (selected_conversion_int == 11) {
-        currency_gui(value, text);
+        currency_gui(value, text, currency_handled);
     }
     else {
         general_gui(selected_conversion_int, value, text);

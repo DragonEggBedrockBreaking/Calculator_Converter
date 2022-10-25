@@ -79,7 +79,7 @@ int main()
                 ans1 = "", ans2 = "", ans3 = "", ans4 = "", inpath = "", outpath = "", message = "";
 
     bool main_dropdown = true, maths_main = false, graphs = false, conversion_main = false, scripting = false,
-         plot1 = false, plot2 = false, plot3 = false, plot4 = false, processing = false;
+         plot1 = false, plot2 = false, plot3 = false, plot4 = false, processing = false, currency_handled = false;
 
     ImVec4 colour1 = ImVec4(1, 0.75f, 0, 1), colour2 = ImVec4(0, 1, 0, 1),
            colour3 = ImVec4(1, 0, 1, 0), colour4 = ImVec4(0, 1, 1, 0);
@@ -159,7 +159,6 @@ int main()
 
                 colour1 = ImVec4(1, 0.75f, 0, 1), colour2 = ImVec4(0, 1, 0, 1),
                 colour3 = ImVec4(1, 0, 1, 0), colour4 = ImVec4(0, 1, 1, 0);
-
             }
 
             ImGui::End();
@@ -205,7 +204,7 @@ int main()
             static int selected_conversion_opt;
             ImGui::Combo("Mathematical Operations", &selected_conversion_opt, unit_types, IM_ARRAYSIZE(unit_types));
 
-            run_conversion_gui(selected_conversion_opt, value, text);
+            run_conversion_gui(selected_conversion_opt, value, text, currency_handled);
 
             ImGui::End();
         }

@@ -107,7 +107,7 @@ const double kelvin_celcius(const double& val)
     return val + 273.15;
 }
 
-const double convert_currency(const double& val, const std::string& from, const std::string& to, const bool& ignore_date)
+const double convert_currency(const double& val, const std::string& from, const std::string& to, bool& ignore_date)
 {
     if (!std::filesystem::exists("eurofxref.zip") && !std::filesystem::exists("eurofxref.csv")) {
         system("wget -nv https://www.ecb.europa.eu/stats/eurofxref/eurofxref.zip");
@@ -130,9 +130,11 @@ const double convert_currency(const double& val, const std::string& from, const 
         timeinfo = localtime(&rawtime);
         strftime(buffer, 80, "%d %B %Y", timeinfo);
 
+        ignore_date = true;
+
         if (date_column[0] != buffer) {
             std::remove("eurofxref.csv");
-            return convert_currency(val, from, to, true);
+            return convert_currency(val, from, to, ignore_date);
         }
     }
 

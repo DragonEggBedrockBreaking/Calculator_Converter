@@ -29,6 +29,6 @@ struct Graph {
                        ImVec4& colour1, ImVec4& colour2, ImVec4& colour3, ImVec4& colour4);
 };
 
-void run_conversion_gui(const int& selected_conversion_int, double& value, std::string& text);
+void run_conversion_gui(const int& selected_conversion_int, double& value, std::string& text, bool& currency_handled);
 
 void run_scripting_gui(std::string& inpath, std::string& outpath, std::string& message, bool& processing);
