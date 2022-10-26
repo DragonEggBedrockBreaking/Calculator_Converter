@@ -1,16 +1,14 @@
-#include <regex>
-
-#include <boost/algorithm/string.hpp>
 #include "lib/nml.h"
 #include <muParser.h>
 
 #include "maths_functions.h"
+#include "utils.h"
 
 const double
 basic(const std::string& expression)
 {
     try {
-        const std::string expr = std::regex_replace(expression, std::regex(" "), "");
+        const std::string expr = replace(expression, " ", "");
         mu::Parser p;
         p.SetExpr(expression);
         return p.Eval();
@@ -334,40 +332,52 @@ quartic(const double & error, const double & x4coef1, const double & x3coef1, co
 const std::string
 diff(const std::string & equ)
 {
-    std::string equ_f = std::regex_replace(equ, std::regex(" "), "");
-    equ_f = std::regex_replace(equ_f, std::regex("\\+x"), " 1x");
-    equ_f = std::regex_replace(equ_f, std::regex("\\-x"), " 1x");
+    std::string equ_f = replace(equ, " ", "");
+    equ_f = replace(equ_f, "+x", "1x");
+    equ_f = replace(equ_f, "-x", "+-1x");
+    equ_f = replace(equ_f, "-", "+-");
+    equ_f = replace(equ_f, "++", "+");
+    equ_f = replace(equ_f, "^+", "^");
+
+    if (equ_f.starts_with("+")) {
+        equ_f.erase(0, 1);
+    }
 
     if (equ_f.starts_with("x")) {
         equ_f = "1" + equ_f;
     }
+    else if (equ_f.starts_with("-x")) {
+        equ_f.erase(0, 1);
+        equ_f = "-1" + equ_f;
+    }
 
     std::string final;
     std::vector<std::string> parts;
-    split(parts, equ_f, boost::is_any_of("+"));
+    split(parts, equ_f, "+");
 
     for (std::string part : parts) {
         if (part.find("x^") != std::string::npos) {
-            part = std::regex_replace(part, std::regex("\\^"), "");
             std::vector<std::string> numbers;
-            split(numbers, part, boost::is_any_of("x"));
+            split(numbers, part, "x^");
 
-            double first = std::stod(numbers.at(0));
-            double second = std::stod(numbers.at(1));
+            if (numbers.size() > 1) {
+                double first = std::stod(numbers.at(0));
+                double second = std::stod(numbers.at(1));
 
-            first *= second;
-            second--;
+                first *= second;
+                second--;
 
-            if (second != 1) {
-                final += std::to_string(first) + "x^" + std::to_string(second) + " + ";
-            }
-            else {
-                final += std::to_string(first) + "x + ";
+                if (second != 1) {
+                    final += double_to_string(first) + "x^" + double_to_string(second) + " + ";
+                }
+                else {
+                    final += double_to_string(first) + "x + ";
+                }
             }
         }
         else if (part.find("x") != std::string::npos) {
             std::vector<std::string> numbers;
-            split(numbers, part, boost::is_any_of("x"));
+            split(numbers, part, "x");
 
             final = final + numbers.at(0);
 
@@ -380,49 +390,63 @@ diff(const std::string & equ)
         final.pop_back();
     }
 
+    final = replace(final, "+ -", "- ");
+
     return final;
 }
 
 const std::string
 integr(const std::string & equ)
 {
-    std::string equ_f = std::regex_replace(equ, std::regex(" "), "");
-    equ_f = std::regex_replace(equ_f, std::regex("\\+x"), " 1x");
-    equ_f = std::regex_replace(equ_f, std::regex("\\-x"), " 1x");
+    std::string equ_f = replace(equ, " ", "");
+    equ_f = replace(equ_f, "+x", "1x");
+    equ_f = replace(equ_f, "-x", "+-1x");
+    equ_f = replace(equ_f, "-", "+-");
+    equ_f = replace(equ_f, "++", "+");
+    equ_f = replace(equ_f, "^+", "^");
+
+    if (equ_f.starts_with("+")) {
+        equ_f.erase(0, 1);
+    }
 
     if (equ_f.starts_with("x")) {
         equ_f = "1" + equ_f;
     }
+    else if (equ_f.starts_with("-x")) {
+        equ_f.erase(0, 1);
+        equ_f = "-1" + equ_f;
+    }
 
-    if (equ_f.find("^-1+") != std::string::npos) {
+    if (equ_f.find("^-1+") != std::string::npos || equ_f.ends_with("^-1")) {
         return "Invalid (contains 1/x)";
     }
 
     std::string final;
     std::vector<std::string> parts;
-    split(parts, equ_f, boost::is_any_of("+"));
+    split(parts, equ_f, "+");
 
     for (std::string part : parts) {
         if (part.find("x^") != std::string::npos) {
-            part = std::regex_replace(part, std::regex("\\^"), "");
             std::vector<std::string> numbers;
-            split(numbers, part, boost::is_any_of("x"));
+            split(numbers, part, "x^");
 
-            double first = std::stod(numbers.at(0));
-            double second = std::stod(numbers.at(1));
+            if (numbers.size() >= 2) {
+                double first = std::stod(numbers.at(0));
+                double second = std::stod(numbers.at(1));
 
-            second++;
-            first /= second;
+                second++;
+                first /= second;
 
-            final += std::to_string(first) + "x^" + std::to_string(second) + " + ";
+                final += double_to_string(first) + "x^" + double_to_string(second) + " + ";
+            }
         }
         else if (part.find("x") != std::string::npos) {
             std::vector<std::string> numbers;
-            split(numbers, part, boost::is_any_of("x"));
+            split(numbers, part, "x");
 
             double first = std::stod(numbers.at(0)) / 2;
 
-            final += std::to_string(first) + "x^2 + ";
+            final += double_to_string(first) + "x^2 + ";
         }
         else {
             final += part + "x + ";
@@ -435,6 +459,7 @@ integr(const std::string & equ)
         final.pop_back();
     }
 
+    final = replace(final, "+ -", "- ");
     final += " + c";
 
     return final;

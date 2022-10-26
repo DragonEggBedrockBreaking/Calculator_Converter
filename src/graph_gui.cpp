@@ -1,10 +1,9 @@
-#include <regex>
-
 #include <imgui.h>
 #include "lib/imgui_stdlib.h"
 
 #include "guis.h"
 #include "muParser.h"
+#include "utils.h"
 
 template <typename T>
 inline T remap(T x, T x0, T x1, T y0, T y1)
@@ -15,7 +14,7 @@ inline T remap(T x, T x0, T x1, T y0, T y1)
 double Graph::get_y(double& x, const std::string& str)
 {
     try {
-        const std::string expr = std::regex_replace(str, std::regex(" "), "");
+        const std::string expr = replace(str, " ", "");
         mu::Parser p;
         p.DefineVar("x", &x);
         p.SetExpr(str);

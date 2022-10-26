@@ -33,9 +33,7 @@ executable(
     dependency('imgui'),
     dependency('glfw3'),
     dependency('glew'),
-    dependency('boost'),
     dependency('muparser'),
-    dependency('fmt'),
     dependency('rapidcsv'),
     dependency('toml11'),
     dependency('portable-file-dialogs')

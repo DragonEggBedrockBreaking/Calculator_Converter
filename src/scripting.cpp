@@ -1,48 +1,45 @@
 #include <deque>
 #include <fstream>
 #include <iostream>
-#include <regex>
 #include <tuple>
 #include <vector>
 
-#include <boost/algorithm/string.hpp>
-#include <fmt/core.h>
 #include <toml.hpp>
 
 #include "maths_functions.h"
 #include "scripting.h"
+#include "utils.h"
 
 void modify_string(std::string& val)
 {
-    val = std::regex_replace(val, std::regex(" "), "");
+    val = replace(val, " ", "");
 
-    val = std::regex_replace(val, std::regex("x\\^2"), "x");
-    val = std::regex_replace(val, std::regex("x2"), "x");
-    val = std::regex_replace(val, std::regex("x\\^3"), "x");
-    val = std::regex_replace(val, std::regex("x3"), "x");
-    val = std::regex_replace(val, std::regex("x\\^4"), "x");
-    val = std::regex_replace(val, std::regex("x4"), "x");
+    val = replace(val, "x^2", "x");
+    val = replace(val, "x2", "x");
+    val = replace(val, "x^3", "x");
+    val = replace(val, "x3", "x");
+    val = replace(val, "x^4", "x");
+    val = replace(val, "x4", "x");
 
-    val = std::regex_replace(val, std::regex("\\-"), "+-");
-    val = std::regex_replace(val, std::regex("\\+\\+"), "+");
-    val = std::regex_replace(val, std::regex("\\,\\+"), ",");
+    val = replace(val, "-", "+-");
+    val = replace(val, "++", "+");
+    val = replace(val, ",+", ",");
 
     if (val.starts_with("+")) {
         val.erase(0, 1);
     }
 
-    val = std::regex_replace(val, std::regex("\\,x"), ",1x");
-    val = std::regex_replace(val, std::regex("\\+y"), "+1y");
-    val = std::regex_replace(val, std::regex("\\-y"), "-1y");
-    val = std::regex_replace(val, std::regex("\\+z"), "+1z");
-    val = std::regex_replace(val, std::regex("\\-z"), "-1z");
-    val = std::regex_replace(val, std::regex("\\+a"), "+1a");
-    val = std::regex_replace(val, std::regex("\\-a"), "-1a");
+    val = replace(val, ",x", ",1x");
+    val = replace(val, "+y", "+1y");
+    val = replace(val, "-y", "-1y");
+    val = replace(val, "+z", "+1z");
+    val = replace(val, "-z", "-1z");
+    val = replace(val, "+a", "+1a");
+    val = replace(val, "-a", "-1a");
 
     if (val.starts_with("x")) {
         val = "1" + val;
     }
-
 }
 
 void only_nums(std::string& s)
@@ -102,9 +99,9 @@ bool scripting(const std::string& inpath, const std::string& outpath)
             modify_string(val);
 
             std::vector<std::string> around, before, after;
-            split(around, val, boost::is_any_of("="));
-            split(before, around[0], boost::is_any_of("+"));
-            split(after, around[1], boost::is_any_of("+"));
+            split(around, val, "=");
+            split(before, around[0], "+");
+            split(after, around[1], "+");
 
             std::for_each(before.begin(), before.end(), only_nums);
             std::for_each(after.begin(), after.end(), only_nums);
@@ -123,13 +120,13 @@ bool scripting(const std::string& inpath, const std::string& outpath)
 
             std::vector<std::string> equations, around1, around2, before1, before2, after1, after2;
 
-            split(equations, val, boost::is_any_of(","));
-            split(around1, equations[0], boost::is_any_of("="));
-            split(around2, equations[1], boost::is_any_of("="));
-            split(before1, around1[0], boost::is_any_of("+"));
-            split(before2, around2[0], boost::is_any_of("+"));
-            split(after1, around1[1], boost::is_any_of("+"));
-            split(after2, around2[1], boost::is_any_of("+"));
+            split(equations, val, ",");
+            split(around1, equations[0], "=");
+            split(around2, equations[1], "=");
+            split(before1, around1[0], "+");
+            split(before2, around2[0], "+");
+            split(after1, around1[1], "+");
+            split(after2, around2[1], "+");
 
             std::for_each(before1.begin(), before1.end(), only_nums);
             std::for_each(before2.begin(), before2.end(), only_nums);
@@ -154,16 +151,16 @@ bool scripting(const std::string& inpath, const std::string& outpath)
 
             std::vector<std::string> equations, around1, around2, around3, before1, before2, before3, after1, after2, after3;
 
-            split(equations, val, boost::is_any_of(","));
-            split(around1, equations[0], boost::is_any_of("="));
-            split(around2, equations[1], boost::is_any_of("="));
-            split(around3, equations[2], boost::is_any_of("="));
-            split(before1, around1[0], boost::is_any_of("+"));
-            split(before2, around2[0], boost::is_any_of("+"));
-            split(before3, around3[0], boost::is_any_of("+"));
-            split(after1, around1[1], boost::is_any_of("+"));
-            split(after2, around2[1], boost::is_any_of("+"));
-            split(after3, around3[1], boost::is_any_of("+"));
+            split(equations, val, ",");
+            split(around1, equations[0], "=");
+            split(around2, equations[1], "=");
+            split(around3, equations[2], "=");
+            split(before1, around1[0], "+");
+            split(before2, around2[0], "+");
+            split(before3, around3[0], "+");
+            split(after1, around1[1], "+");
+            split(after2, around2[1], "+");
+            split(after3, around3[1], "+");
 
             std::for_each(before1.begin(), before1.end(), only_nums);
             std::for_each(before2.begin(), before2.end(), only_nums);
@@ -194,19 +191,19 @@ bool scripting(const std::string& inpath, const std::string& outpath)
             std::vector<std::string> equations, around1, around2, around3, around4, before1, before2,
                 before3, before4, after1, after2, after3, after4;
 
-            split(equations, val, boost::is_any_of(","));
-            split(around1, equations[0], boost::is_any_of("="));
-            split(around2, equations[1], boost::is_any_of("="));
-            split(around3, equations[2], boost::is_any_of("="));
-            split(around4, equations[3], boost::is_any_of("="));
-            split(before1, around1[0], boost::is_any_of("+"));
-            split(before2, around2[0], boost::is_any_of("+"));
-            split(before3, around3[0], boost::is_any_of("+"));
-            split(before4, around4[0], boost::is_any_of("+"));
-            split(after1, around1[1], boost::is_any_of("+"));
-            split(after2, around2[1], boost::is_any_of("+"));
-            split(after3, around3[1], boost::is_any_of("+"));
-            split(after4, around4[1], boost::is_any_of("+"));
+            split(equations, val, ",");
+            split(around1, equations[0], "=");
+            split(around2, equations[1], "=");
+            split(around3, equations[2], "=");
+            split(around4, equations[3], "=");
+            split(before1, around1[0], "+");
+            split(before2, around2[0], "+");
+            split(before3, around3[0], "+");
+            split(before4, around4[0], "+");
+            split(after1, around1[1], "+");
+            split(after2, around2[1], "+");
+            split(after3, around3[1], "+");
+            split(after4, around4[1], "+");
 
             std::for_each(before1.begin(), before1.end(), only_nums);
             std::for_each(before2.begin(), before2.end(), only_nums);
@@ -241,9 +238,9 @@ bool scripting(const std::string& inpath, const std::string& outpath)
 
             std::vector<std::string> around, before, after;
 
-            split(around, val, boost::is_any_of("="));
-            split(before, around[0], boost::is_any_of("+"));
-            split(after, around[1], boost::is_any_of("+"));
+            split(around, val, "=");
+            split(before, around[0], "+");
+            split(after, around[1], "+");
 
             std::for_each(before.begin(), before.end(), only_nums);
             std::for_each(after.begin(), after.end(), only_nums);
@@ -267,9 +264,9 @@ bool scripting(const std::string& inpath, const std::string& outpath)
 
             std::vector<std::string> around, before, after;
 
-            split(around, val, boost::is_any_of("="));
-            split(before, around[0], boost::is_any_of("+"));
-            split(after, around[1], boost::is_any_of("+"));
+            split(around, val, "=");
+            split(before, around[0], "+");
+            split(after, around[1], "+");
 
             std::for_each(before.begin(), before.end(), only_nums);
             std::for_each(after.begin(), after.end(), only_nums);
@@ -291,9 +288,9 @@ bool scripting(const std::string& inpath, const std::string& outpath)
 
             std::vector<std::string> around, before, after;
 
-            split(around, val, boost::is_any_of("="));
-            split(before, around[0], boost::is_any_of("+"));
-            split(after, around[1], boost::is_any_of("+"));
+            split(around, val, "=");
+            split(before, around[0], "+");
+            split(after, around[1], "+");
 
             std::for_each(before.begin(), before.end(), only_nums);
             std::for_each(after.begin(), after.end(), only_nums);
@@ -327,7 +324,7 @@ bool scripting(const std::string& inpath, const std::string& outpath)
         file << "# Basic\n";
 
         for (std::string& val : basicv) {
-            file << val << " = " << fmt::format("{}", output_doubles.front()) << "\n\n";
+            file << val << " = " << double_to_string(output_doubles.front()) << "\n\n";
             output_doubles.pop_front();
         }
 
@@ -335,37 +332,37 @@ bool scripting(const std::string& inpath, const std::string& outpath)
 
         for (std::string& val : linear1v) {
             file << val << "\n";
-            file << "x = " << fmt::format("{}", output_doubles.front()) << "\n\n";
+            file << "x = " << double_to_string(output_doubles.front()) << "\n\n";
             output_doubles.pop_front();
         }
 
         for (std::string& val : linear2v) {
             file << val << "\n";
-            file << "x = " << fmt::format("{}", output_doubles.front()) << "\n";
+            file << "x = " << double_to_string(output_doubles.front()) << "\n";
             output_doubles.pop_front();
-            file << "y = " << fmt::format("{}", output_doubles.front()) << "\n\n";
+            file << "y = " << double_to_string(output_doubles.front()) << "\n\n";
             output_doubles.pop_front();
         }
 
         for (std::string& val : linear3v) {
             file << val << "\n";
-            file << "x = " << fmt::format("{}", output_doubles.front()) << "\n";
+            file << "x = " << double_to_string(output_doubles.front()) << "\n";
             output_doubles.pop_front();
-            file << "y = " << fmt::format("{}", output_doubles.front()) << "\n";
+            file << "y = " << double_to_string(output_doubles.front()) << "\n";
             output_doubles.pop_front();
-            file << "z = " << fmt::format("{}", output_doubles.front()) << "\n\n";
+            file << "z = " << double_to_string(output_doubles.front()) << "\n\n";
             output_doubles.pop_front();
         }
 
         for (std::string& val : linear4v) {
             file << val << "\n";
-            file << "x = " << fmt::format("{}", output_doubles.front()) << "\n";
+            file << "x = " << double_to_string(output_doubles.front()) << "\n";
             output_doubles.pop_front();
-            file << "y = " << fmt::format("{}", output_doubles.front()) << "\n";
+            file << "y = " << double_to_string(output_doubles.front()) << "\n";
             output_doubles.pop_front();
-            file << "z = " << fmt::format("{}", output_doubles.front()) << "\n";
+            file << "z = " << double_to_string(output_doubles.front()) << "\n";
             output_doubles.pop_front();
-            file << "a = " << fmt::format("{}", output_doubles.front()) << "\n\n";
+            file << "a = " << double_to_string(output_doubles.front()) << "\n\n";
             output_doubles.pop_front();
         }
 
@@ -373,35 +370,35 @@ bool scripting(const std::string& inpath, const std::string& outpath)
 
         for (std::string& val : quadraticv) {
             file << val << "\n";
-            file << "x = " << fmt::format("{}", output_doubles.front()) << "\n";
+            file << "x = " << double_to_string(output_doubles.front()) << "\n";
             output_doubles.pop_front();
-            file << "x = " << fmt::format("{}", output_doubles.front()) << "\n";
+            file << "x = " << double_to_string(output_doubles.front()) << "\n";
             output_doubles.pop_front();
-            file << "tp = (" << fmt::format("{}", output_doubles.front()) << ", ";
+            file << "tp = (" << double_to_string(output_doubles.front()) << ", ";
             output_doubles.pop_front();
-            file << fmt::format("{}", output_doubles.front()) << ")\n\n";
+            file << double_to_string(output_doubles.front()) << ")\n\n";
             output_doubles.pop_front();
         }
 
         for (std::string& val : cubicv) {
             file << val << "\n";
-            file << "x = " << fmt::format("{}", output_doubles.front()) << "\n";
+            file << "x = " << double_to_string(output_doubles.front()) << "\n";
             output_doubles.pop_front();
-            file << "x = " << fmt::format("{}", output_doubles.front()) << "\n";
+            file << "x = " << double_to_string(output_doubles.front()) << "\n";
             output_doubles.pop_front();
-            file << "x = " << fmt::format("{}", output_doubles.front()) << "\n\n";
+            file << "x = " << double_to_string(output_doubles.front()) << "\n\n";
             output_doubles.pop_front();
         }
 
         for (std::string& val : quarticv) {
             file << val << "\n";
-            file << "x = " << fmt::format("{}", output_doubles.front()) << "\n";
+            file << "x = " << double_to_string(output_doubles.front()) << "\n";
             output_doubles.pop_front();
-            file << "x = " << fmt::format("{}", output_doubles.front()) << "\n";
+            file << "x = " << double_to_string(output_doubles.front()) << "\n";
             output_doubles.pop_front();
-            file << "x = " << fmt::format("{}", output_doubles.front()) << "\n";
+            file << "x = " << double_to_string(output_doubles.front()) << "\n";
             output_doubles.pop_front();
-            file << "x = " << fmt::format("{}", output_doubles.front()) << "\n\n";
+            file << "x = " << double_to_string(output_doubles.front()) << "\n\n";
             output_doubles.pop_front();
         }
 
@@ -409,13 +406,13 @@ bool scripting(const std::string& inpath, const std::string& outpath)
 
         for (std::string& val : differentiatev) {
             file << "f(x) = " << val << "\n";
-            file << "f'(x) = " << fmt::format("{}", output_strings.front()) << "\n\n";
+            file << "f'(x) = " << output_strings.front() << "\n\n";
             output_strings.pop_front();
         }
 
         for (std::string& val : integratev) {
             file << "f'(x) = " << val << "\n";
-            file << "f(x) = " << fmt::format("{}", output_strings.front()) << "\n\n";
+            file << "f(x) = " << output_strings.front() << "\n\n";
             output_strings.pop_front();
         }
 

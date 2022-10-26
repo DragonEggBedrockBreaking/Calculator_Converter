@@ -1,4 +1,5 @@
-#include <fmt/core.h>
+#include <stdexcept>
+
 #include <imgui.h>
 #include "lib/imgui_stdlib.h"
 
@@ -28,11 +29,11 @@ void linear(double& xcoef1_e1, double& ycoef1_e1, double& zcoef1_e1, double& aco
         input_double("##foo4", &num2_e1, "%.8f", true);
 
         if (ImGui::Button("Solve")) {
-            ans1 = std::to_string(linear1(xcoef1_e1, num1_e1, xcoef2_e1, num2_e1));
+            ans1 = double_to_string(linear1(xcoef1_e1, num1_e1, xcoef2_e1, num2_e1));
         }
 
         ImGui::SameLine();
-        ImGui::Text("%s", fmt::format("Answer: x = {}", ans1).c_str());
+        ImGui::Text("Answer: x = %s", ans1.c_str());
     }
 
     if (unknowns == 2) {
@@ -54,11 +55,11 @@ void linear(double& xcoef1_e1, double& ycoef1_e1, double& zcoef1_e1, double& aco
         if (ImGui::Button("Solve")) {
             auto [answer1, answer2] = linear2(xcoef1_e1, ycoef1_e1, num1_e1, xcoef2_e1, ycoef2_e1, num2_e1,
                                               xcoef1_e2, ycoef1_e2, num1_e2, xcoef2_e2, ycoef2_e2, num2_e2);
-            ans1 = std::to_string(answer1), ans2 = std::to_string(answer2);
+            ans1 = double_to_string(answer1), ans2 = double_to_string(answer2);
         }
 
         ImGui::SameLine();
-        ImGui::Text("%s", fmt::format("Answer: x = {}, y = {}", ans1, ans2).c_str());
+        ImGui::Text("Answer: x = %s, y = %s", ans1.c_str(), ans2.c_str());
     }
 
     if (unknowns == 3) {
@@ -97,11 +98,11 @@ void linear(double& xcoef1_e1, double& ycoef1_e1, double& zcoef1_e1, double& aco
                                                xcoef2_e2, ycoef2_e2, zcoef2_e2, num2_e2,
                                                xcoef1_e3, ycoef1_e3, zcoef1_e3, num1_e3,
                                                xcoef2_e3, ycoef2_e3, zcoef2_e3, num2_e3);
-            ans1 = std::to_string(answer1), ans2 = std::to_string(answer2), ans3 = std::to_string(answer3);
+            ans1 = double_to_string(answer1), ans2 = double_to_string(answer2), ans3 = double_to_string(answer3);
         }
 
         ImGui::SameLine();
-        ImGui::Text("%s", fmt::format("Answer: x = {}, y = {}, z = {}", ans1, ans2, ans3).c_str());
+        ImGui::Text("Answer: x = %s, y = %s, z = %s", ans1.c_str(), ans2.c_str(), ans3.c_str());
     }
 
     if (unknowns == 4) {
@@ -159,11 +160,11 @@ void linear(double& xcoef1_e1, double& ycoef1_e1, double& zcoef1_e1, double& aco
                     xcoef2_e3, ycoef2_e3, zcoef2_e3, acoef2_e3, num2_e3,
                     xcoef1_e4, ycoef1_e4, zcoef1_e4, acoef1_e4, num1_e4,
                     xcoef2_e4, ycoef2_e4, zcoef2_e4, acoef2_e4, num2_e4);
-            ans1 = std::to_string(answer1), ans2 = std::to_string(answer2), ans3 = std::to_string(answer3), ans4 = std::to_string(answer4);
+            ans1 = double_to_string(answer1), ans2 = double_to_string(answer2), ans3 = double_to_string(answer3), ans4 = double_to_string(answer4);
         }
 
         ImGui::SameLine();
-        ImGui::Text("%s", fmt::format("Answer: x = {}, y = {}, z = {}, a = {}", ans1, ans2, ans3, ans4).c_str());
+        ImGui::Text("Answer: x = %s, y = %s, z = %s, a = %s", ans1.c_str(), ans2.c_str(), ans3.c_str(), ans4.c_str());
     }
 }
 
@@ -186,13 +187,13 @@ void non_linear(double& x4coef1, double& x4coef2, double& x3coef1, double& x3coe
         if (ImGui::Button("Solve")) {
             auto [answer1, answer2] = quad(x2coef1, xcoef1, num1, x2coef2, xcoef2, num2);
             auto [answer3, answer4] = quad_tp(x2coef1, xcoef1, num1, x2coef2, xcoef2, num2);
-            ans1 = std::to_string(answer1), ans2 = std::to_string(answer2), ans3 = std::to_string(answer3), ans4 = std::to_string(answer4);
+            ans1 = double_to_string(answer1), ans2 = double_to_string(answer2), ans3 = double_to_string(answer3), ans4 = double_to_string(answer4);
         }
 
         ImGui::SameLine();
-        ImGui::Text("%s", fmt::format("Answers: x = {}, x = {}", ans1, ans2).c_str());
+        ImGui::Text("Roots: x = %s, x = %s", ans1.c_str(), ans2.c_str());
         ImGui::SameLine();
-        ImGui::Text("%s", fmt::format("Turning point: ({}, {})", ans3, ans4).c_str());
+        ImGui::Text("Turning point: (%s, %s)", ans3.c_str(), ans4.c_str());
     }
 
     if (exponent == 3) {
@@ -212,11 +213,11 @@ void non_linear(double& x4coef1, double& x4coef2, double& x3coef1, double& x3coe
 
         if (ImGui::Button("Solve")) {
             auto [answer1, answer2, answer3] = cubic(error, x3coef1, x2coef1, xcoef1, num1, x3coef2, x2coef2, xcoef2, num2);
-            ans1 = std::to_string(answer1), ans2 = std::to_string(answer2), ans3 = std::to_string(answer3);
+            ans1 = double_to_string(answer1), ans2 = double_to_string(answer2), ans3 = double_to_string(answer3);
         }
 
         ImGui::SameLine();
-        ImGui::Text("%s", fmt::format("Answers: x = {}, x = {}, x = {}", ans1, ans2, ans3).c_str());
+        ImGui::Text("Roots: x = %s, x = %s, x = %s", ans1.c_str(), ans2.c_str(), ans3.c_str());
     }
 
     if (exponent == 4) {
@@ -238,11 +239,11 @@ void non_linear(double& x4coef1, double& x4coef2, double& x3coef1, double& x3coe
 
         if (ImGui::Button("Solve")) {
             auto [answer1, answer2, answer3, answer4] = quartic(error, x4coef1, x3coef1, x2coef1, xcoef1, num1, x4coef2, x3coef2, x2coef2, xcoef2, num2);
-            ans1 = std::to_string(answer1), ans2 = std::to_string(answer2), ans3 = std::to_string(answer3), ans4 = std::to_string(answer4);
+            ans1 = double_to_string(answer1), ans2 = double_to_string(answer2), ans3 = double_to_string(answer3), ans4 = double_to_string(answer4);
         }
 
         ImGui::SameLine();
-        ImGui::Text("%s", fmt::format("Answers: x = {}, x = {}, x = {}, x = {}", ans1, ans2, ans3, ans4).c_str());
+        ImGui::Text("Roots: x = %s, x = %s, x = %s, x = %s", ans1.c_str(), ans2.c_str(), ans3.c_str(), ans4.c_str());
     }
 }
 
@@ -264,7 +265,7 @@ void run_maths_gui(const int& selected_maths_opt,
     case 0:
         static std::string expression;
         ImGui::InputText("Mathematical Expression", &expression);
-        ImGui::Text("%s", fmt::format("Answer: {}", std::to_string(basic(expression))).c_str());
+        ImGui::Text("Answer: %s", double_to_string(basic(expression)).c_str());
         break;
 
     case 1:
@@ -289,14 +290,14 @@ void run_maths_gui(const int& selected_maths_opt,
         ImGui::InputText("Mathematical Equation", &equation);
 
         try {
-            ImGui::Text("%s", fmt::format("Differentiated: {}", diff(equation)).c_str());
+            ImGui::Text("Differentiated: %s", diff(equation).c_str());
         }
         catch (std::invalid_argument) {
             ImGui::Text("Differentiated:");
         }
 
         try {
-            ImGui::Text("%s", fmt::format("Integrated: {}", integr(equation)).c_str());
+            ImGui::Text("Integrated: %s", integr(equation).c_str());
         }
         catch (std::invalid_argument) {
             ImGui::Text("Integrated:");
@@ -310,12 +311,12 @@ void run_maths_gui(const int& selected_maths_opt,
         input_double("P##foo1", &first, "%.5f", false);
         input_double("=##foo2", &second, "%.5f", true);
         ImGui::SameLine();
-        ImGui::Text("%s", fmt::format("{}", npr(first, second)).c_str());
+        ImGui::Text("%s", double_to_string(npr(first, second)).c_str());
 
         input_double("C##foo3", &first, "%.5f", false);
         input_double("=##foo4", &second, "%.5f", true);
         ImGui::SameLine();
-        ImGui::Text("%s", fmt::format("{}", ncr(first, second)).c_str());
+        ImGui::Text("%s", double_to_string(ncr(first, second)).c_str());
 
         ImGui::Text("X ~ B(");
         input_double(", ##foo5", &first, "%.5f", true);
@@ -324,7 +325,7 @@ void run_maths_gui(const int& selected_maths_opt,
         ImGui::Text("P(X =");
         input_double(") =##foo7", &third, "%.5f", true);
         ImGui::SameLine();
-        ImGui::Text("%s", fmt::format("{}", bin_dist(third, first, second)).c_str());
+        ImGui::Text("%s", double_to_string(bin_dist(third, first, second)).c_str());
 
         break;
     }

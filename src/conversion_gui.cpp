@@ -2,11 +2,11 @@
 #include <unordered_map>
 #include <vector>
 
-#include <fmt/core.h>
 #include <imgui.h>
 
 #include "conversion_functions.h"
 #include "guis.h"
+#include "utils.h"
 
 static const char* length_units[] {
     "meter",
@@ -190,24 +190,24 @@ void temperature_gui(double& value, std::string& text)
 
         if (ImGui::Button("Convert")) {
             if (convert_from == 0 && convert_to == 1) {
-                text = fmt::format("{}", celcius_fahrenheit(value));
+                text = double_to_string(celcius_fahrenheit(value));
             }
             else if (convert_from == 1 && convert_to == 0) {
-                text = fmt::format("{}", fahrenheit_celcius(value));
+                text = double_to_string(fahrenheit_celcius(value));
             }
             else if (convert_from == 0 && convert_to == 2) {
-                text = fmt::format("{}", celcius_kelvin(value));
+                text = double_to_string(celcius_kelvin(value));
             }
             else if (convert_from == 2 && convert_to == 0) {
-                text = fmt::format("{}", kelvin_celcius(value));
+                text = double_to_string(kelvin_celcius(value));
             }
             else if (convert_from == 1 && convert_to == 2) {
                 double celcius = fahrenheit_celcius(value);
-                text = fmt::format("{}", celcius_kelvin(celcius));
+                text = double_to_string(celcius_kelvin(celcius));
             }
             else {
                 double celcius = kelvin_celcius(value);
-                text = fmt::format("{}", celcius_fahrenheit(celcius));
+                text = double_to_string(celcius_fahrenheit(celcius));
             }
         }
 
@@ -307,14 +307,14 @@ void general_gui(const int& selected_conversion_opt, double& value, std::string&
 
         if (ImGui::Button("Convert")) {
             if (convert_from == 0) {
-                text = fmt::format("{}", convert_to_unit(value, dropdown_arr[convert_to]));
+                text = double_to_string(convert_to_unit(value, dropdown_arr[convert_to]));
             }
             else if (convert_to == 0) {
-                text = fmt::format("{}", convert_from_unit(value, dropdown_arr[convert_from]));
+                text = double_to_string(convert_from_unit(value, dropdown_arr[convert_from]));
             }
             else {
                 double si = convert_from_unit(value, dropdown_arr[convert_from]);
-                text = fmt::format("{}", convert_to_unit(si, dropdown_arr[convert_to]));
+                text = double_to_string(convert_to_unit(si, dropdown_arr[convert_to]));
             }
         }
 
@@ -336,7 +336,7 @@ void currency_gui(double& value, std::string& text, bool& currency_handled)
         ImGui::InputDouble("Input value##foo3", &value);
 
         if (ImGui::Button("Convert")) {
-            text = fmt::format("{}", convert_currency(value, currency_from, currency_to, currency_handled));
+            text = double_to_string(convert_currency(value, currency_from, currency_to, currency_handled));
         }
 
         ImGui::SameLine();
