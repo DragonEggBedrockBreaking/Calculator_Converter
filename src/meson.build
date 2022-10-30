@@ -4,8 +4,8 @@ project('calculator-converter',
   version: '0.1.0',
   default_options: [
     'cpp_std=c++20',
-    'optimization=0',
-    'debug=true'
+    'optimization=3',
+    'debug=false'
   ]
 )
 
